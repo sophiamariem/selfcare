@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Skin schedule</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=8">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png?v=5">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=5">
+<meta name="theme-color" content="#0B0C0E">
+<meta name="mobile-web-app-capable" content="yes">
+<script src="app.js?v=4"></script>
+</head>
+<body>
+<div class="wrap">
+<div class="topbar"><nav class="pages" aria-label="Pages"><a href="./" aria-current="page">Skin</a><a href="teeth.html">Teeth</a></nav><button id="theme" class="themebtn" type="button" aria-label="Toggle theme">☾</button></div>
+<header class="hero">
+  <p class="count" id="count"></p>
+  <h1>Skin schedule</h1>
+  <p>Daily routine, the week, limits, what to do when, and a dated plan for any treatment. Open nothing new unless it says so.</p>
+</header>
+<div class="tonight" id="tonight" hidden><p class="lbl" id="tonight-lbl">Tonight</p><p class="what" id="tonight-what"></p><p class="sub" id="tonight-sub"></p><p class="dev" id="tonight-dev" hidden></p></div>
+
+<nav class="tabs" role="tablist" aria-label="Sections">
+  <button role="tab" aria-selected="true" data-tab="daily">Daily</button>
+  <button role="tab" aria-selected="false" data-tab="cal">Week</button>
+  <button role="tab" aria-selected="false" data-tab="week">Limits</button>
+  <button role="tab" aria-selected="false" data-tab="ifthen">If / then</button>
+  <button role="tab" aria-selected="false" data-tab="proc">Procedure</button>
+  <button role="tab" aria-selected="false" data-tab="treat">Treatments</button>
+  <button role="tab" aria-selected="false" data-tab="inv">Shelf</button>
+</nav>
+
+<!-- DAILY -->
+<section class="view active" id="daily">
+<p class="lead">Normal days. Around a procedure, follow the <a class="go" data-tab="proc" href="#proc">Procedure</a> tab instead. The Tonight card above says which applies.</p>
+<div class="day">
+  <div class="col am">
+    <h2>Morning <small>cleanse, treat, protect</small></h2>
+    <ol class="steps">
+      <li><div><b>Cleanse</b><span>Cetaphil only.</span></div></li>
+      <li><div><b>Toner</b><span>Mixsoon hyaluronic toner, or a Numbuzin niacinamide pad instead.</span></div></li>
+      <li><div><b>LED mask (optional)</b><span>On clean skin, for the time in the manual.</span></div></li>
+      <li><div><b>Medicube (optional)</b><span>MC or Derma Shot most days, over 2–3 layers of the toner. Booster on dry, tight days instead, with a night hydrator borrowed for the morning (<a class="go" data-tab="week" href="#week">details</a>). Skip on pad mornings. Vitamin C goes on after, never under it. Use this or gua sha, not both.</span></div></li>
+      <li><div><b>Vitamin C</b><span>Not during recovery. If the morning feels like too many layers, move it to night under Differin.<ul data-slot="Vitamin C"></ul></span></div></li>
+      <li><div><b>Brightening serum</b><span>One at a time:<ul data-slot="Morning serum"></ul></span></div></li>
+      <li><div><b>Azelaic acid</b><span>Caladerm cream. Skip on pad mornings (<a class="go" data-tab="ifthen" href="#ifthen">If / then</a>).</span></div></li>
+      <li><div><b>Eye</b><span>One at a time:<ul data-slot="Eyes (day)"></ul></span></div></li>
+      <li><div><b>Day cream</b><span><ul data-slot="Day cream"></ul></span></div></li>
+      <li><div><b>Gua sha or jade roller (optional)</b><span>On mornings without the Medicube. Over the day cream for slip, light pressure, upward and outward. Chilled roller for puffiness. Skip on breakouts or sore, Differin-stung skin.</span></div></li>
+      <li><div><b>SPF 50+</b><span>Every day, reapply if you're out.</span></div></li>
+    </ol>
+    <div class="note am">
+      <h3>During the day</h3>
+      <ul>
+    <li><b>Red bump, no head</b>: Pair Acne Cream</li>
+    <li><b>Whitehead</b>: salicylic spot treatment</li>
+    <li><b>Tight or dry</b>: 345 mist over SPF</li>
+  </ul>
+    </div>
+  </div>
+
+  <div class="col pm">
+    <h2>Night <small>cleanse, hydrate, Differin, seal</small></h2>
+    <ol class="steps">
+      <li><div><b>Double cleanse</b><span>Pick the row that matches the day in the table below.</span></div></li>
+      <li><div><b>High-frequency wand (optional)</b><span>Clean, completely dry skin, spots only. Check the tracker in <a class="go" data-tab="week" href="#week">Limits</a> first.</span></div></li>
+      <li><div><b>Toner</b><span>Mixsoon hyaluronic toner.</span></div></li>
+      <li><div><b>Hydrator</b><span>One at a time:<ul data-slot="Night hydrator"></ul></span></div></li>
+      <li><div><b>Booster (optional, over the hydrator)</b><span>Over the hydrator, under Differin. One at a time:<ul data-slot="Booster"></ul></span></div></li>
+      <li><div><b>Differin</b><span>Nightly. Wait a minute for the serum to sink in first.</span></div></li>
+      <li><div><b>Azelaic acid</b><span>Prescription cream, over the Differin once it's dry.</span></div></li>
+      <li><div><b>Night cream</b><span>One at a time:<ul data-slot="Night cream"></ul></span></div></li>
+      <li><div><b>Eye</b><span>One at a time:<ul data-slot="Eyes (night)"></ul></span></div></li>
+    </ol>
+    <div class="note pm">
+      <h3>Spots at night</h3>
+      <ul>
+    <li><b>Red bump, no head</b>: micro-pin patch</li>
+    <li><b>Head formed</b>: benzoyl peroxide or hydrocolloid patch</li>
+    <li>One thing per spot per night</li>
+    <li>No spot treatments on a Reedle Shot night</li>
+  </ul>
+    </div>
+  </div>
+</div>
+
+<h2 style="margin-top:1.5rem">Which cleansers tonight</h2>
+<div class="tbl">
+<table>
+<thead><tr><th>Situation</th><th>First cleanse</th><th>Second cleanse</th></tr></thead>
+<tbody>
+<tr><td><b>Normal day, SPF only</b></td><td>Round Lab 1025</td><td>COSRX salicylic</td></tr>
+<tr><td><b>SPF reapplied a lot, or light makeup</b></td><td>Clean It Zero balm</td><td>COSRX salicylic</td></tr>
+<tr><td><b>Feels reactive, still want salicylic</b></td><td>Cetaphil</td><td>COSRX salicylic</td></tr>
+<tr><td><b>Heavy makeup</b></td><td>Clean It Zero balm</td><td>COSRX salicylic</td></tr>
+<tr><td><b>Skin feels sensitive</b></td><td>Cetaphil</td><td>Round Lab 1025</td></tr>
+<tr><td><b>Heavy makeup + sensitive</b></td><td>Clean It Zero balm</td><td>Round Lab 1025</td></tr>
+<tr><td><b>Procedure recovery (first ~2 weeks)</b></td><td>Cetaphil only</td><td>&mdash;</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- CALENDAR -->
+<section class="view" id="cal">
+<ul class="lead" style="padding-left:1.1rem"><li>Differin every night</li><li>Wed and Sun are the default pad mornings, but any morning the skin asks counts (<a class="go" data-tab="ifthen" href="#ifthen">If / then</a>), within the <a class="go" data-tab="week" href="#week">Limits</a></li><li>Devices are a suggested rhythm, not a must: skip any day the skin isn't calm. What goes under each is on <a class="go" data-tab="week" href="#week">Limits</a></li><li>Nothing marked here during the procedure window</li></ul>
+<div class="week">
+  <div><h3>Mon</h3><ul><li>Standard</li></ul></div>
+  <div><h3>Tue</h3><ul><li>Standard</li></ul></div>
+  <div class="pad"><h3>Wed</h3><ul><li>Pad morning, if needed</li><li>No azelaic that morning</li></ul></div>
+  <div><h3>Thu</h3><ul><li>Standard</li></ul></div>
+  <div><h3>Fri</h3><ul><li>Standard</li><li>Sheet mask night</li></ul></div>
+  <div class="reedle"><h3>Sat</h3><span>Optional Reedle night, no Differin:</span><ul><li>Toner</li><li>Reedle Shot 100</li><li>Hydrator</li><li>Cream</li></ul><span>Skip Sat night + Sun morning:</span><ul><li>Pads</li><li>Azelaic</li><li>Spot treatments</li></ul></div>
+  <div class="pad"><h3>Sun</h3><ul><li>Pad morning, if needed</li><li>No azelaic that morning</li><li>Never after a Reedle night</li></ul></div>
+</div>
+</section>
+
+<!-- WEEK -->
+<section class="view" id="week">
+<ul class="lead" style="padding-left:1.1rem"><li>Differin every night, that's fixed</li><li>Everything else below is a ceiling, not a target</li><li>None of it in the two weeks around a procedure</li></ul>
+<div class="tracker" id="tracker"></div>
+<div class="note">
+  <h3>Combinations</h3>
+  <ul>
+    <li><b>One strong thing a day.</b> Pads, Reedle, the wand and Medicube Booster are the strong ones: never two on the same day</li>
+    <li><b>Nothing pushed deeper.</b> Booster and Reedle only with hydrating products, never over Differin, azelaic, vitamin C, niacinamide 10%, TXA or acids</li>
+    <li><b>After a strong thing, go gentle.</b> The rest of that day and the next morning: no azelaic, spot treatments or other devices except LED</li>
+    <li><b>Differin is fixed, the rest flexes.</b> If the skin stings, drop the extras first, keep Differin, then drop Differin for a night if it still stings</li>
+    <li><b>Calm, closed skin only.</b> No device or active on skin that is broken, peeling, sunburnt, swollen or freshly picked</li>
+    <li><b>Around any treatment</b>, everything stops with the actives and comes back in the order on the <a class="go" data-tab="treat" href="#treat">Treatments</a> tab</li>
+  </ul>
+</div>
+<div class="tbl">
+<table>
+<thead><tr><th>Thing</th><th>Limit</th><th>Rules</th></tr></thead>
+<tbody>
+<tr><td><b>Exfoliating pads</b><br><span class="muted">Some By Mi, later Medicube</span></td><td>2 a week</td><td><ul><li>Any morning the skin asks (<a class="go" data-tab="ifthen" href="#ifthen">If / then</a>)</li><li>At least 2 days apart</li><li>No azelaic that morning</li><li>Not the morning after Reedle</li></ul></td></tr>
+<tr><td><b>Reedle Shot 100</b></td><td>1 a week</td><td><ul><li>Replaces Differin that night</li><li>Toner, Reedle, hydrator, cream</li><li>No azelaic, pads or spot treatments that night or next morning</li><li>No pad for 2 days after</li><li>No wand, Medicube or gua sha that night or next day</li></ul></td></tr>
+<tr><td><b>Sheet masks</b></td><td>No limit</td><td><ul><li>After serum, before Differin</li><li>Not on a Reedle night</li></ul></td></tr>
+<tr><td><b>Spot treatments</b></td><td>1 per spot per night</td><td><ul><li>Day: Pair or salicylic</li><li>Night: pin patch, BPO or hydrocolloid</li></ul></td></tr>
+<tr><td><b>High-frequency wand</b><br><span class="muted">argon / neon</span></td><td>3 a week</td><td><ul><li>Clean, completely dry skin, before serums</li><li>A few seconds per spot, or 3–5 min over breakout areas</li><li>Nothing with alcohol on the skin first, it sparks</li><li>Not on a pad morning, a Reedle night or the day after Reedle</li><li>Not on broken, peeling, sunburnt or Differin-stung skin</li><li>Not over visible broken veins or a redness flare</li><li>Before Differin at night, once the skin is dry and calm</li><li>Not with a pacemaker or other implant, pregnancy, epilepsy, or metal in the face</li></ul></td></tr>
+<tr><td><b>LED mask</b><br><span class="muted">mornings</span></td><td>As the manual says</td><td><ul><li>Clean skin, after toner, before the Medicube and serums</li><li>Eye protection if the manual says so</li><li>Fine alongside Differin; stop if it stings or flushes</li><li>Not with light-sensitising medication, or epilepsy if it flickers</li><li>Around a procedure: only if the clinic says so</li></ul></td></tr>
+<tr><td><b>Medicube</b><br><span class="muted">Age-R Booster Pro, mornings</span></td><td>As the manual says</td><td><ul><li><b>MC and Derma Shot</b> (most days): over 2–3 layers of the hyaluronic toner or the gel, never on dry skin</li><li>Skip MC and Derma Shot on: injected or filled areas for 2 weeks after Botox or filler, active cysts or inflamed breakouts, broken, peeling or sunburnt skin</li><li><b>Booster</b> instead when the skin is dry, tight or dehydrated, with hydrating products only</li><li>Skip Booster when the skin stings, and never over Differin, azelaic, vitamin C, acids or pads: it pushes them deeper</li><li>No mode on a pad morning, after a Reedle night, or during a procedure window</li><li>Not with a pacemaker, pregnancy, epilepsy or metal in the face</li></ul></td></tr>
+<tr><td><b>Gua sha / jade roller</b></td><td>Any day</td><td><ul><li>Over a cream or oil, never on dry skin</li><li>Light pressure, upward and outward</li><li>Not over active breakouts or picked spots</li><li>Not on a Reedle night or the morning after</li><li>Wash the tool after every use</li></ul></td></tr>
+<tr><td><b>Numbuzin niacinamide pads</b></td><td>No limit</td><td><ul><li>It's a toner, use freely</li></ul></td></tr>
+</tbody>
+</table>
+</div>
+<h2 style="margin-top:1.5rem">What goes under each device</h2>
+<p class="lead">Matched to when you use each one, so it only uses products from that part of the routine. After the device, carry on with the routine in order.</p>
+<div class="tbl">
+<table>
+<thead><tr><th>Device</th><th>Put on first</th><th>Not under it</th></tr></thead>
+<tbody>
+<tr><td><b>LED mask</b><br><span class="muted">morning, after toner</span></td><td><ul><li>Nothing more: just the Mixsoon hyaluronic toner</li></ul></td><td><ul><li>Vitamin C, serums, creams, SPF: they all go on after</li></ul></td></tr>
+<tr><td><b>Medicube MC or Derma Shot</b><br><span class="muted">morning, needs a wet, slippy layer</span></td><td><ul><li>2–3 layers of the Mixsoon hyaluronic toner, or the Medicube gel</li><li>Re-wet with the toner if it dries mid-session (or the Dr. Althea 345 mist once it arrives)</li></ul></td><td><ul><li>Rohto vitamin C and the brightening serums: they go on after</li><li>Caladerm and the day cream: too rich, they block the current</li></ul></td></tr>
+<tr><td><b>Medicube Booster</b><br><span class="muted">morning, dry or tight days</span></td><td><ul><li>The hyaluronic toner, then one hydrator borrowed from the night shelf: Manyo Bifida or Mixsoon bean essence</li><li>SKIN1004 Madagascar ampoule on sensitive days</li></ul></td><td><ul><li>Rohto vitamin C, SKIN1004 brightening, Mary &amp; May or Anua niacinamide: Booster pushes them deeper</li><li>Caladerm, pads, any cream</li></ul></td></tr>
+<tr><td><b>Gua sha / jade roller</b><br><span class="muted">morning, on days without the Medicube</span></td><td><ul><li>The day cream for slip: Torriden Dive-In, or SKIN1004 Centella cream</li><li>Add a little more if it drags</li></ul></td><td><ul><li>SPF: do it before, then SPF last</li><li>Oils: they make SPF slide</li></ul></td></tr>
+<tr><td><b>High-frequency wand</b><br><span class="muted">night, after cleansing</span></td><td><ul><li>Nothing: clean, completely dry skin</li></ul></td><td><ul><li>Anything at all, especially with alcohol (it sparks)</li></ul></td></tr>
+</tbody>
+</table>
+</div>
+<div class="note pm">
+  <h3>Doing them in the evening instead</h3>
+  <ul>
+    <li><b>LED mask:</b> after the toner, before the hydrator. Fine on Differin nights</li>
+    <li><b>Medicube MC or Derma Shot:</b> over 2–3 layers of toner, or a generous layer of Mixsoon bean essence or Manyo Bifida. Then the rest of the routine; let the skin dry before Differin</li>
+    <li><b>Medicube Booster:</b> this is where your night boosters fit best: Vollufiline or NMN Bio Lifting-sil, or Manyo Bifida, Mixsoon bean essence or the SKIN1004 Madagascar ampoule. Wait 10–15 minutes before Differin, and put a thin layer of night cream on first if the skin feels warm or tingly</li>
+    <li><b>Gua sha / jade roller:</b> before Differin, over the hydrator with a little Mixsoon bean cream or a few drops of Alpha-H Vitamin E for slip. Let it sink in, then Differin. Never after Differin: it drags it towards the eyes and lips</li>
+    <li><b>Not under any of them at night:</b> Differin, the prescription azelaic, BPO or spot treatments</li>
+    <li>Moving a device to the evening doesn't add to the day: it's still one strong thing a day, and no Booster on a Reedle night</li>
+  </ul>
+</div>
+</section>
+
+<!-- IFTHEN -->
+<section class="view" id="ifthen">
+<ul class="lead" style="padding-left:1.1rem"><li>Read the skin, then pick the row</li><li>If nothing matches, change nothing</li></ul>
+<div class="tbl">
+<table>
+<thead><tr><th>If</th><th>Then</th></tr></thead>
+<tbody>
+<tr><td><b>Rough, dull, or SPF sitting unevenly</b></td><td><ul><li>Some By Mi pad that morning, skip Caladerm</li><li>Within the 2-a-week limit</li></ul></td></tr>
+<tr><td><b>Small closed bumps, forehead / chin / jaw</b></td><td><ul><li>Some By Mi pad that morning</li><li>Pair on the bumps during the day</li></ul></td></tr>
+<tr><td><b>Blackheads, nose and chin look porey, oilier week</b></td><td><ul><li>Medicube pad that morning (once Some By Mi is finished)</li><li>Clean It Zero as first cleanse that night</li></ul></td></tr>
+<tr><td><b>Red bump, no head</b></td><td><ul><li>Day: Pair</li><li>Night: micro-pin patch</li><li>Optional: a few seconds of the high-frequency wand first, if the tracker in <a class="go" data-tab="week" href="#week">Limits</a> says OK</li><li>Don't touch it</li></ul></td></tr>
+<tr><td><b>Whitehead</b></td><td><ul><li>Day: salicylic spot</li><li>Night: BPO or hydrocolloid</li><li>Optional: a few seconds of the high-frequency wand before the patch, if the tracker in <a class="go" data-tab="week" href="#week">Limits</a> says OK</li></ul></td></tr>
+<tr><td><b>Popped or picked</b></td><td><ul><li>Hydrocolloid patch only</li><li>No actives on it until closed</li></ul></td></tr>
+<tr><td><b>Flaking, stinging, or red from Differin</b></td><td><ul><li>No pads, Reedle or spot treatments until it's gone</li><li>Skip night azelaic for 2–3 nights, keep Differin</li><li>Illiyoon over Differin, thicker layer</li><li>Cetaphil instead of COSRX for the second cleanse</li></ul></td></tr>
+<tr><td><b>Tight or dry midday</b></td><td><ul><li>345 mist over SPF</li></ul></td></tr>
+<tr><td><b>Dry week, cold weather, flight</b></td><td><ul><li>Illiyoon at night instead of the lighter cream</li><li>Hydrating sheet mask any night</li><li>Alpha-H Vitamin E as the booster</li></ul></td></tr>
+<tr><td><b>New red mark after a spot</b></td><td><ul><li>Nothing extra on it, both azelaics and TXA already cover it</li><li>SPF on it every day, no sun</li><li>Don't exfoliate over it</li></ul></td></tr>
+<tr><td><b>Sunburn or windburn</b></td><td><ul><li>Stop all actives 2–3 days</li><li>Hydrator, Illiyoon, SPF</li></ul></td></tr>
+<tr><td><b>Eye area dry or Medik8 stinging</b></td><td><ul><li>Aestura or Illiyoon under the eyes that night</li><li>Medik8 every other night for a week</li></ul></td></tr>
+<tr><td><b>Want to try Reedle Shot</b></td><td><ul><li>Pick a night with calm skin, not a pad day</li><li>See Limits for the rules</li></ul></td></tr>
+<tr><td><b>Morning feels like too many layers</b></td><td><ul><li>Move vitamin C to night, under Differin</li><li>Keep the niacinamide serum in the morning</li></ul></td></tr>
+<tr><td><b>Puffy or tired morning</b></td><td><ul><li>Medicube MC or Derma Shot over 2–3 layers of the toner</li><li>Or a chilled jade roller</li></ul></td></tr>
+<tr><td><b>Dry, tight or dehydrated morning</b></td><td><ul><li>Medicube Booster instead of MC, over the toner and a night hydrator borrowed for the morning</li><li>No vitamin C under it</li></ul></td></tr>
+<tr><td><b>Breaking out or stinging</b></td><td><ul><li>No Medicube today, any mode</li><li>LED mask is fine if it doesn't sting</li><li>Wand on the spots only if the tracker says OK</li></ul></td></tr>
+<tr><td><b>Skin looks good</b></td><td><ul><li>Change nothing, open nothing</li></ul></td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- PROCEDURE -->
+<section class="view" id="proc">
+<div class="picker">
+  <label>Treatment
+    <select id="ptype">
+      <option value="tca">Microneedling + TCA</option>
+      <option value="mn">Microneedling only</option>
+      <option value="pdl">Vascular laser (PDL / V-Beam)</option>
+      <option value="botox">Botox</option>
+      <option value="lpeel">Light chemical peel</option>
+      <option value="mpeel">Medium TCA peel</option>
+      <option value="frax">Fractional laser (CO2 / erbium)</option>
+    </select>
+  </label>
+  <label>Date
+    <input type="date" id="pdate">
+  </label>
+</div>
+<ul class="lead" style="padding-left:1.1rem"><li>Dates are a plan; if the skin is still pink, tight or peeling, wait</li><li>The clinic's sheet beats this page</li><li>Nothing new gets opened unless a row says so</li></ul>
+<button type="button" class="calbtn" id="ics">Add this plan to my calendar</button>
+<ul class="tl" id="tl"></ul>
+<div class="note warn" id="pwarn"></div>
+</section>
+
+<!-- TREATMENTS -->
+<section class="view" id="treat">
+<p class="lead">General rules for each treatment, so the routine around it is already decided. The <a class="go" data-tab="proc" href="#proc">Procedure tab</a> has the dated plan for the one coming up.</p>
+
+<div class="note">
+  <h3>Rules that apply to all of them</h3>
+  <ul>
+    <li>One procedure at a time, 2+ weeks apart.</li>
+    <li>No actives on skin that is open, peeling, swollen or pink.</li>
+    <li>Strict SPF for 4 weeks after anything that resurfaces or heats.</li>
+    <li>No picking, steam, sauna or hard workouts for 48 hours.</li>
+    <li>Devices stop with the actives and come back in stages: LED once the skin has closed (earlier only if the clinic uses it), the jade roller when Differin restarts, gua sha, Medicube MC and Derma Shot when Differin is nightly, and Booster and the wand last, with the full routine. The <a class="go" data-tab="proc" href="#proc">Procedure</a> tab puts dates on it.</li>
+    <li>Injectables (Botox, filler): no wand, Medicube, gua sha, roller or face pressure on the area for 2 weeks; LED is fine from the next day.</li>
+    <li>Clinic instructions beat this page.</li>
+  </ul>
+</div>
+
+<div class="tbl">
+<table>
+<thead><tr><th>Treatment</th><th>Before</th><th>After</th><th>Spacing</th></tr></thead>
+<tbody>
+<tr>
+  <td><b>Botox</b><br><span class="muted">dynamic lines, eye area</span></td>
+  <td>No skincare changes.</td>
+  <td><ul><li>4 h: nothing on the sites, stay upright, no exercise</li><li>That night: skip Differin and eye retinal</li><li>Day 1: full routine</li><li>1 week: no facials, gua sha, face pressure</li></ul></td>
+  <td>Two weeks clear of needling or laser, either side. Repeat every 3–4 months.</td>
+</tr>
+<tr>
+  <td><b>Vascular laser (PDL / V-Beam)</b><br><span class="muted">the actual fix for PIE</span></td>
+  <td><ul><li>2 weeks: no sun or self-tan</li><li>3–5 days: stop Differin, azelaic, pads, spot treatments</li></ul></td>
+  <td><ul><li>Days 1–3: red, swollen (bruising 7–10 days if purpuric)</li><li>Cetaphil, hydrator, Illiyoon, SPF only</li><li>Day 3–5, no swelling: Differin alternate nights, then nightly</li><li>1 week: azelaic, pads</li><li>Cloth-wrapped ice the first evening</li></ul></td>
+  <td>Usually 2–4 sessions, 4–6 weeks apart. Two to four weeks away from needling.</td>
+</tr>
+<tr>
+  <td><b>Microneedling only</b><br><span class="muted">texture, scars</span></td>
+  <td><ul><li>3–5 days: stop Differin, azelaic, pads, BPO, salicylic</li><li>Keep hydrator, cream, SPF</li></ul></td>
+  <td><ul><li>Days 0–2: Cetaphil, clinic ointment or hydrator + Illiyoon, SPF</li><li>Day 2–3: Rejuran mask or cream</li><li>Day 4–5: Differin alternate nights; nightly by day 7</li><li>After day 7: pads, spot treatments</li><li>PDRN only counts right after needling, in clinic</li></ul></td>
+  <td>4–6 weeks apart, usually 3–6 sessions. Two weeks clear of Botox.</td>
+</tr>
+<tr>
+  <td><b>Microneedling + TCA</b><br><span class="muted">deeper scars</span></td>
+  <td>Stop all actives 7 days before.</td>
+  <td><ul><li>Days 3–7: peeling; pink to day 10</li><li>After peeling: Rejuran mask</li><li>Day 8–10: Differin alternate nights</li><li>Week 3: Differin nightly, azelaic</li><li>Week 4: everything</li><li>Dated version: <a class="go" data-tab="proc" href="#proc">Procedure tab</a></li></ul></td>
+  <td>6–8 weeks apart. Two weeks clear of Botox, four of laser.</td>
+</tr>
+<tr>
+  <td><b>Chemical peel alone</b><br><span class="muted">TCA, glycolic, mandelic</span></td>
+  <td>Stop all actives 5–7 days before (3 days for a light peel).</td>
+  <td><ul><li>Light: flaking 2–4 days, Differin back day 4–5</li><li>Medium TCA: same as needling + TCA</li><li>Until flaking stops: hydrator, Illiyoon, SPF</li></ul></td>
+  <td>Light: every 2–4 weeks. Medium: 6–8 weeks. Not within 2 weeks of needling.</td>
+</tr>
+<tr>
+  <td><b>Fractional laser (CO2 / erbium)</b><br><span class="muted">textured scars, if needling plateaus</span></td>
+  <td><ul><li>7 days: stop all actives</li><li>Ask the clinic about priming with Differin first</li></ul></td>
+  <td><ul><li>5–10 days downtime, grid marks, swelling</li><li>Clinic ointment only until healed over</li><li>Then: needling + TCA timeline</li><li>Day 10–14: Differin</li><li>4 weeks: strict sun avoidance</li></ul></td>
+  <td>6–12 weeks apart. Four weeks clear of anything else.</td>
+</tr>
+<tr>
+  <td><b>Reedle Shot at home</b><br><span class="muted">surface only</span></td>
+  <td>Nothing special; not within 2 weeks of any procedure.</td>
+  <td><ul><li>Hydrator and cream over it</li><li>No Differin, azelaic, pads, spot treatments that night or next morning</li><li>Prickles for a day</li></ul></td>
+  <td>Once a week at most, Saturdays.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="note">
+  <h3>What goes on healing skin, in order of how early it's allowed</h3>
+  <ol>
+    <li>Clinic ointment, Cetaphil</li>
+    <li>Plain hydrator + Illiyoon or Aestura</li>
+    <li>Rejuran mask or cream, sheet masks</li>
+    <li>Eye creams</li>
+    <li>Differin</li>
+    <li>Azelaic acid, brightening serums, vitamin C</li>
+    <li>Boosters (Vollufiline, NMN, Alpha-H)</li>
+    <li>Pads, spot treatments, Reedle Shot</li>
+  </ol>
+</div>
+
+<div class="note">
+  <h3>Which treatment for which problem</h3>
+  <ul>
+    <li><b>Red marks (PIE)</b>: vascular laser. Azelaic, niacinamide/TXA, SPF are the slow backup.</li>
+    <li><b>Pitted / textured scars</b>: microneedling, then fractional laser if it plateaus.</li>
+    <li><b>Eye line</b>: Botox. The retinal eye cream is already doing all a topical can.</li>
+    <li><b>New pimples</b>: Pair and pin patches early, then hands off.</li>
+  </ul>
+</div>
+</section>
+
+<!-- INVENTORY -->
+<section class="view" id="inv">
+<ul class="lead" style="padding-left:1.1rem"><li>Edit on any item: Opened, Finished or Reseal, and its labels</li><li>A slot with nothing left (or only a running-low item) shows what to buy</li><li>One product per slot at a time</li><li>Saved on this device</li></ul>
+<div class="note am" id="tobuy"></div>
+<div class="inv">
+  <div>
+    <h3>Open now</h3>
+    <div id="openlist"></div>
+  </div>
+  <div class="sealed">
+    <h3>Sealed, don't open yet</h3>
+    <div id="sealedlist"></div>
+  </div>
+</div>
+<details class="done"><summary>Finished <span id="donecount"></span></summary><div id="donelist"></div></details>
+<div class="addrow">
+  <input type="text" id="addname" placeholder="Add a product" aria-label="Product name">
+  <select id="addslot" aria-label="Slot"></select>
+  <select id="addstatus" aria-label="Status"><option value="sealed">Sealed</option><option value="open">Open</option></select>
+  <button type="button" id="addbtn">Add</button>
+  <button type="button" id="resetbtn" class="quiet">Reset list</button>
+</div>
+</section>
+
+</div>
+<script>
+(function(){
+  var PLANS={
+    tca:{name:'Microneedling + TCA',steps:[
+      [-7,-7,'stop','Actives stop',['Last night of Differin tonight','From tomorrow: no Differin, both azelaics, vitamin C, pads, BPO, salicylic spot, Reedle','Keep: cleansers, toner, hydrator, Torriden, night cream, Medik8, SPF']],
+      [-1,-1,'','Night before',['Cleanse, toner, hydrator, night cream','Skip Medik8 eye from tonight']],
+      [0,0,'now','Procedure',['Only what the clinic applies and sends home','Nothing of yours tonight']],
+      [1,2,'','Days 1–2, red and tight',['Cetaphil with cool water','Clinic ointment','SPF if outside','No serums, masks, makeup','Fresh pillowcase']],
+      [3,5,'','Days 3–5, peeling',['Same as above','Thin layer of Manyo or bean essence under the ointment if tight','Don\'t pick or pull','SPF every time you go out']],
+      [6,7,'go','Days 6–7, peeled, pink',['PDRN or hydrating sheet mask tonight','Hydrator, Illiyoon','Day eye cream around the eyes','SPF']],
+      [8,10,'go','Days 8–10, no longer pink or tight',['Differin every other night, Illiyoon over it','Mornings: toner, hydrator, Torriden, SPF','Dr. Jart Cryo Firming any night']],
+      [15,15,'go','Week 3',['Differin nightly','Both azelaics back','Brightening serum, vitamin C, boosters, Medik8 back','Normal cleansing table']],
+      [22,22,'go','Week 4',['Pads, spot treatments, Reedle back','Full routine']]
+    ],warn:['Strict sun until D+28: hat, shade, SPF reapplied','First 5 days: no hot water on the face, sauna, hard workouts','Open nothing new for recovery; a PDRN or hydrating mask on the first post-peel night is the only exception']},
+    mn:{name:'Microneedling',steps:[
+      [-4,-4,'stop','Actives stop',['Last night of Differin tonight','From tomorrow: no Differin, both azelaics, vitamin C, pads, BPO, salicylic, Reedle','Keep: hydrator, cream, SPF']],
+      [0,0,'now','Procedure',['Clinic ointment or hydrator + Illiyoon','Cetaphil, SPF','PDRN only counts if the clinic applies it right after']],
+      [1,2,'','Days 1–2',['Cetaphil, hydrator, Illiyoon, SPF','No actives, masks, makeup']],
+      [3,3,'go','Day 3',['PDRN or hydrating mask','Sheet masks fine from here']],
+      [4,6,'go','Days 4–6',['Differin every other night, Illiyoon over it','Mornings bland']],
+      [7,7,'go','Week 2',['Differin nightly','Both azelaics, vitamin C, Medik8, pads, spot treatments back']],
+      [14,14,'go','Week 3',['Reedle allowed again','Full routine']]
+    ],warn:['Strict sun for 2 weeks','No sauna or hard workouts for 48 hours','Next session 4–6 weeks later; Botox 2+ weeks clear']},
+    pdl:{name:'Vascular laser',steps:[
+      [-14,-14,'stop','Two weeks out',['No sun, no self-tan from now']],
+      [-4,-4,'stop','Actives stop',['Last night of Differin tonight','From tomorrow: no Differin, both azelaics, vitamin C, pads, spot treatments']],
+      [0,0,'now','Laser',['Cloth-wrapped ice this evening','Cetaphil, hydrator, Illiyoon, SPF','No heat or exercise']],
+      [1,3,'','Days 1–3, red and swollen',['Same bland routine','Bruising can last 7–10 days on purpuric settings','No exercise until swelling is gone']],
+      [4,6,'go','Days 4–6, if no swelling',['Differin every other night','Mornings bland']],
+      [7,7,'go','Week 2',['Differin nightly','Both azelaics, vitamin C, pads, Medik8 back','Full routine']],
+      [28,28,'go','Week 5',['Earliest next session','Usually 2–4 sessions total']]
+    ],warn:['SPF on the treated area every day for 4 weeks','If bruised, nothing but bland products on the bruise','Needling 2–4 weeks clear either side']},
+    botox:{name:'Botox',steps:[
+      [0,0,'now','Injection day',['4 hours: nothing on the sites, stay upright, no exercise','No rubbing','Tonight: skip Differin and Medik8']],
+      [1,1,'go','Day 1',['Full routine, retinoids included']],
+      [1,7,'','Week 1',['No facials, gua sha, eye roller, Medicube, wand or face pressure']],
+      [14,14,'go','Two weeks',['Settled; needling or laser allowed from here']]
+    ],warn:['No skincare changes beyond day 0','Repeat every 3–4 months if it works']},
+    lpeel:{name:'Light peel',steps:[
+      [-3,-3,'stop','Actives stop',['Last night of Differin tonight','From tomorrow: no Differin, azelaics, vitamin C, pads, spot treatments']],
+      [0,0,'now','Peel',['Cetaphil, hydrator, Illiyoon, SPF only']],
+      [1,4,'','Days 1–4, flaking',['Same bland routine','Don\'t pick']],
+      [5,7,'go','Days 5–7',['Differin every other night']],
+      [8,8,'go','Week 2',['Differin nightly','Azelaics, pads, Medik8 back']]
+    ],warn:['SPF strictly for 2 weeks','Next light peel 2–4 weeks later','Not within 2 weeks of needling']},
+    mpeel:{name:'Medium TCA peel',steps:[
+      [-7,-7,'stop','Actives stop',['Last night of Differin tonight','From tomorrow: no Differin, azelaics, vitamin C, pads, BPO, salicylic, Reedle']],
+      [0,0,'now','Peel',['Clinic ointment only tonight']],
+      [1,2,'','Days 1–2, tight',['Cetaphil cool water, clinic ointment, SPF','No serums, masks, makeup']],
+      [3,7,'','Days 3–7, peeling',['Same','Thin hydrator under the ointment if tight','Don\'t pull the peel']],
+      [8,9,'go','Days 8–9, peeled',['PDRN or hydrating sheet mask','Hydrator, Illiyoon, day eye cream, SPF']],
+      [10,12,'go','Days 10–12',['Differin every other night','Mornings bland']],
+      [15,15,'go','Week 3',['Differin nightly','Azelaics, brightening serum, vitamin C, Medik8 back']],
+      [22,22,'go','Week 4',['Pads, spot treatments, Reedle back']]
+    ],warn:['Strict sun until D+28','No hot water, sauna, hard workouts for 5 days','Next medium peel 6–8 weeks later']},
+    frax:{name:'Fractional laser',steps:[
+      [-7,-7,'stop','Actives stop',['Last night of Differin tonight','From tomorrow: no Differin, azelaics, vitamin C, pads, BPO, salicylic, Reedle','Ask the clinic if they want Differin priming instead']],
+      [0,0,'now','Laser',['Clinic ointment only','Nothing of yours']],
+      [1,5,'','Days 1–5, grid marks and swelling',['Clinic ointment and Cetaphil only','SPF once the clinic says so','No makeup']],
+      [6,10,'go','Days 6–10, healed over',['Hydrator, Illiyoon, PDRN or hydrating mask','Day eye cream','SPF every time out']],
+      [10,14,'go','Days 10–14',['Differin every other night']],
+      [21,21,'go','Week 4',['Differin nightly','Azelaics, vitamin C, Medik8, boosters back']],
+      [28,28,'go','Week 5',['Pads, spot treatments, Reedle back','Full routine']]
+    ],warn:['Strict sun avoidance until D+28, then careful for 3 months','4 weeks clear of anything else','Next session 6–12 weeks later']}
+  };
+  // Devices around any treatment, worked out from the plan's own milestones so a new plan gets them for free:
+  //   stop with the actives; LED when the plan first says "go"; jade roller when Differin restarts;
+  //   gua sha, MC and Derma Shot when Differin is nightly; Booster and the wand with the full routine (or the last step).
+  //   Plans with no "Actives stop" step are treated as injectables: hands and devices off the area for 2 weeks.
+  var DEV_OFF='Devices off from tomorrow too: wand, Medicube (all modes), gua sha, jade roller, LED';
+  function addDeviceSteps(plan){
+    var st=plan.steps;
+    function at(day){for(var i=0;i<st.length;i++)if(st[i][0]===day)return st[i];return null}
+    function add(day,txt){var x=at(day);if(x)x[4].push(txt);else{st.push([day,day,'go','Devices',[txt]]);st.sort(function(p,q){return p[0]-q[0]})}}
+    function firstWith(re){for(var i=0;i<st.length;i++)if(st[i][0]>0&&st[i][4].some(function(t){return re.test(t)}))return st[i][0];return null}
+    var stop=null;st.forEach(function(x){if(stop===null&&x[3]==='Actives stop')stop=x});
+    if(!stop){
+      add(0,'No wand, Medicube, gua sha or roller on the treated areas for 2 weeks');
+      add(1,'LED mask fine from today');
+      add(14,'Wand, Medicube, gua sha and roller back on the treated areas');
+      return;
+    }
+    stop[4].push(DEV_OFF);
+    var last=firstWith(/Full routine/i);if(last===null)last=st[st.length-1][0];
+    var go=null;st.forEach(function(x){if(go===null&&x[0]>0&&x[2]==='go')go=x[0]});
+    var roller=firstWith(/Differin every other night/i),full=firstWith(/Differin nightly/i);
+    if(go===null)go=1;
+    if(roller===null)roller=go;
+    if(full===null)full=Math.max(roller,Math.round((roller+last)/2));
+    add(go,'LED mask back, only if the clinic agrees');
+    add(roller,'Jade roller back, light pressure');
+    add(full,'Gua sha, Medicube MC and Derma Shot back');
+    add(last,'Medicube Booster and the wand back');
+  }
+  Object.keys(PLANS).forEach(function(k){addDeviceSteps(PLANS[k])});
+  var DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],MONS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function addDays(d,n){var x=new Date(d);x.setDate(x.getDate()+n);return x}
+  function fmt(d){return DAYS[d.getDay()]+' '+d.getDate()+' '+MONS[d.getMonth()]}
+  function fmtRange(a,b){if(a.getTime()===b.getTime())return fmt(a);return DAYS[a.getDay()]+' '+a.getDate()+(a.getMonth()===b.getMonth()?'':' '+MONS[a.getMonth()])+' – '+fmt(b)}
+  function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+  function render(){
+    var type=document.getElementById('ptype').value,dv=document.getElementById('pdate').value;
+    if(!dv)return;
+    var parts=dv.split('-'),D=new Date(+parts[0],+parts[1]-1,+parts[2]);
+    var plan=PLANS[type],html='';
+    plan.steps.forEach(function(st){
+      var a=addDays(D,st[0]),b=addDays(D,st[1]);
+      var rel=st[0]===0?'procedure':(st[0]<0?(-st[0])+' day'+(st[0]===-1?'':'s')+' before':'day'+(st[0]===st[1]?' '+st[0]:'s '+st[0]+'–'+st[1]));
+      var cls=st[2]==='stop'?'stopd':(st[2]==='go'?'god':(st[2]==='now'?'now':''));
+      var wcls=st[2]==='stop'?'when stop':(st[2]==='go'?'when go':'when');
+      html+='<li class="'+cls+'"><div class="'+wcls+'">'+fmtRange(a,b)+'<small>'+esc(rel)+'</small></div><div class="what"><b>'+esc(st[3])+'</b><ul>'+st[4].map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul></div></li>';
+    });
+    document.getElementById('tl').innerHTML=html;
+    document.getElementById('pwarn').innerHTML='<h3>'+esc(plan.name)+', '+fmt(D)+'</h3><ul>'+plan.warn.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>';
+    var c=document.getElementById('count'),n=Math.round((D-new Date().setHours(0,0,0,0))/86400000);
+    c.textContent=n>0?plan.name+' in '+n+' day'+(n===1?'':'s')+', '+fmt(D):(n===0?plan.name+' today':'Day '+(-n)+' after '+plan.name.toLowerCase());
+    cur={plan:plan,D:D,rel:-n};
+    tonight();
+    tracker();
+    try{localStorage.setItem('skin-proc',JSON.stringify({t:type,d:dv}))}catch(e){}
+  }
+  var cur=null;
+  function iso(d){return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)}
+  function today0(){var t=new Date();t.setHours(0,0,0,0);return t}
+  function daysBetween(a,b){return Math.round((b-a)/86400000)}
+  function parseIso(v){var p=v.split('-');return new Date(+p[0],+p[1]-1,+p[2])}
+
+  // Pads and Reedle: log what was used, work out whether today is allowed from the Limits rules
+  var log={pads:[],reedle:[],wand:[]};
+  try{var L=JSON.parse(localStorage.getItem('skin-log'));if(L&&L.pads&&L.reedle){log=L;if(!log.wand)log.wand=[]}}catch(e){}
+  function saveLog(){try{localStorage.setItem('skin-log',JSON.stringify(log))}catch(e){}}
+  function ago(list){var t=today0(),best=null;list.forEach(function(v){var n=daysBetween(parseIso(v),t);if(n>=0&&(best===null||n<best))best=n});return best}
+  function inLast7(list){var t=today0();return list.filter(function(v){var n=daysBetween(parseIso(v),t);return n>=0&&n<7}).length}
+  function procBlock(){
+    if(!cur)return null;
+    var st=cur.plan.steps,from=Math.min(st[0][0],-14),to=Math.max(st[st.length-1][0],14);
+    if(cur.rel>=from&&cur.rel<to)return cur.rel<0?'procedure in '+(-cur.rel)+' day'+(cur.rel===-1?'':'s'):(cur.rel===0?'procedure today':'still recovering (back on day '+to+')');
+    return null;
+  }
+  function padStatus(){
+    var why=procBlock();if(why)return {ok:false,why:why};
+    var p=ago(log.pads),r=ago(log.reedle);
+    if(p===0)return {ok:false,why:'already used one today',done:true};
+    if(ago(log.wand)===0)return {ok:false,why:'wand used today'};
+    if(r!==null&&r<=2)return {ok:false,why:r===0?'Reedle tonight':'Reedle '+(r===1?'last night':'2 nights ago')};
+    if(p!==null&&p<2)return {ok:false,why:'last pad was yesterday'};
+    if(inLast7(log.pads)>=2)return {ok:false,why:'2 already in the last 7 days'};
+    return {ok:true};
+  }
+  function reedleStatus(){
+    var why=procBlock();if(why)return {ok:false,why:why};
+    var r=ago(log.reedle),p=ago(log.pads);
+    if(r===0)return {ok:false,why:'done tonight',done:true};
+    if(inLast7(log.reedle)>=1)return {ok:false,why:'already one in the last 7 days'};
+    if(p===0)return {ok:false,why:'pad this morning'};
+    if(ago(log.wand)===0)return {ok:false,why:'wand used today'};
+    return {ok:true};
+  }
+  function wandStatus(){
+    var why=procBlock();if(why)return {ok:false,why:why};
+    var w=ago(log.wand),r=ago(log.reedle);
+    if(w===0)return {ok:false,why:'used today',done:true};
+    if(ago(log.pads)===0)return {ok:false,why:'pad this morning'};
+    if(r!==null&&r<=1)return {ok:false,why:r===0?'Reedle tonight':'Reedle last night'};
+    if(inLast7(log.wand)>=3)return {ok:false,why:'3 already in the last 7 days'};
+    return {ok:true};
+  }
+  function tracker(){
+    var el=document.getElementById('tracker');if(!el)return;
+    var ps=padStatus(),rs=reedleStatus();
+    function row(name,st,key,btn){
+      var cls=st.ok?'ok':(st.done?'done':'no');
+      var txt=st.ok?'OK today':(st.done?'Logged today':'Not today: '+st.why);
+      var recent=log[key].slice().sort().reverse().slice(0,3).map(function(v){return fmt(parseIso(v))}).join(', ');
+      return '<div class="trow"><div><b>'+name+'</b><span class="st '+cls+'">'+txt+'</span>'+(recent?'<small>Last: '+recent+'</small>':'')+'</div>'+
+        (st.done?'<button type="button" data-undo="'+key+'">Undo</button>':'<button type="button" data-log="'+key+'"'+(st.ok?'':' class="quiet"')+'>'+btn+'</button>')+'</div>';
+    }
+    el.innerHTML='<h3>Pads, Reedle and wand</h3>'+row('Exfoliating pad',ps,'pads','Used one today')+row('Reedle Shot',rs,'reedle','Did it tonight')+row('High-frequency wand',wandStatus(),'wand','Used it today')+'<p class="tnote">Only ever on calm, unbroken skin, whatever this says.</p>';
+  }
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-log],[data-undo]');if(!b)return;
+    var t=iso(today0());
+    if(b.dataset.log){var k=b.dataset.log;if(log[k].indexOf(t)<0)log[k].push(t)}
+    else{var k2=b.dataset.undo;log[k2]=log[k2].filter(function(v){return v!==t})}
+    log.pads=log.pads.slice(-30);log.reedle=log.reedle.slice(-30);log.wand=log.wand.slice(-30);
+    saveLog();tracker();tonight();
+  });
+
+  // Suggested device rhythm per weekday (0 = Sun), with what goes under each
+  var UNDER={LED:'after toner',MC:'over 2–3 layers of toner','Derma Shot':'over 2–3 layers of toner',Booster:'toner + Manyo Bifida or bean essence','Gua sha':'over the day cream','Jade roller':'chilled, over the day cream',Wand:'spots only, clean dry skin'};
+  var DEV_WEEK=[
+    {am:['LED'],note:'No Medicube or gua sha: pad morning, and the day after a Reedle night'},
+    {am:['LED','MC'],pm:['Wand']},
+    {am:['LED','Derma Shot'],pm:['Wand']},
+    {am:['LED'],note:'No Medicube on a pad morning. Chilled jade roller if you skip the pad'},
+    {am:['LED','MC'],pm:['Wand']},
+    {am:['LED','Derma Shot'],note:'Booster instead if the skin is dry or tight'},
+    {am:['LED','MC'],note:'No Booster or wand today if it\'s a Reedle night'}
+  ];
+  function devText(list){return list.map(function(d){return d+' ('+UNDER[d]+')'}).join(', ')}
+  function devHtml(list){return list.map(function(d){return '<span class="chip">'+d+'<em>'+UNDER[d]+'</em></span>'}).join('')}
+  (function(){
+    var NAMES=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    document.querySelectorAll('#cal .week>div').forEach(function(card){
+      var i=NAMES.indexOf(card.querySelector('h3').textContent.trim().slice(0,3));if(i<0)return;
+      var d=DEV_WEEK[i],h='<div class="dev"><b>Devices</b><span class="when">Morning</span>'+devHtml(d.am);
+      if(d.pm)h+='<span class="when">Night</span>'+devHtml(d.pm);
+      if(d.note)h+='<small>'+d.note+'</small>';
+      card.insertAdjacentHTML('beforeend',h+'</div>');
+    });
+  })();
+
+  // Morning / Tonight card: the procedure plan while inside its window, otherwise the normal week
+  var WEEK_NIGHT=[
+    ['Standard night','Differin, then the prescription azelaic once it\'s dry'],
+    ['Standard night','Differin, then the prescription azelaic once it\'s dry'],
+    ['Standard night','Differin, then the prescription azelaic once it\'s dry'],
+    ['Standard night','Differin and azelaic. Tomorrow is a pad morning if the skin asks'],
+    ['Standard night','Differin, then the prescription azelaic once it\'s dry'],
+    ['Standard night + sheet mask','Mask after the serum, before Differin'],
+    ['Optional Reedle night','If yes: toner, Reedle Shot, hydrator, cream, no Differin. If not, a standard night']
+  ];
+  var MORNING='Cetaphil, toner, vitamin C, brightening serum, Caladerm, eye, day cream, SPF 50+';
+  var BLAND='Keep it bland: cleanse, toner, hydrator, day cream, SPF';
+  function tonight(){
+    var box=document.getElementById('tonight');if(!box||!cur)return;
+    var morning=new Date().getHours()<12,plan=cur.plan,rel=cur.rel;
+    var st=plan.steps,first=st[0][0],last=st[st.length-1][0],what,sub,day=new Date().getDay();
+    document.getElementById('tonight-lbl').textContent=morning?'This morning':'Tonight';
+    if(rel>=first&&rel<=last){
+      var c=null,prev=null;
+      st.forEach(function(x){if(rel>=x[0]&&rel<=x[1])c=x;if(x[0]<=rel)prev=x});
+      if(c){what=c[3];sub=c[4][0]}
+      else if(rel<0){what='Procedure prep';sub='Actives stay paused. Cleansers, toner, hydrator, night cream, SPF only'}
+      else{what='Recovery';sub=prev[3]+' rules still apply'}
+      if(morning){var m=(c||prev)[4].filter(function(x){return /^Mornings/.test(x)})[0];sub=m||BLAND}
+      box.classList.add('proc');
+    }else{
+      box.classList.remove('proc');
+      if(morning){
+        var ps=padStatus(),padDay=(day===3||day===0);
+        what=padDay?'Pad morning, if the skin asks':'Standard morning';
+        sub=MORNING+(padDay?(ps.ok?'. Pad: OK today, skip Caladerm if you use one':(ps.done?'. Pad logged, no Caladerm':'. Pad: not today, '+ps.why)):'');
+      }else{
+        var w=WEEK_NIGHT[day];what=w[0];sub=w[1];
+        if(day===6){var rs=reedleStatus();if(!rs.ok&&!rs.done)sub='Reedle not tonight ('+rs.why+'). Standard night'}
+      }
+    }
+    document.getElementById('tonight-what').textContent=what;
+    document.getElementById('tonight-sub').textContent=sub;
+    var dl=document.getElementById('tonight-dev'),dw=DEV_WEEK[day],dv=null;
+    if(!box.classList.contains('proc'))dv=morning?dw.am:dw.pm;
+    if(dv&&dv.length){dl.textContent='Devices: '+devText(dv)+(morning&&dw.note?'. '+dw.note:'');dl.hidden=false}else dl.hidden=true;
+    box.hidden=false;
+  }
+
+  // Calendar: the dated plan as an .ics file, one all-day event per step
+  document.getElementById('ics').addEventListener('click',function(){
+    if(!cur)return;
+    function d8(d){return iso(d).replace(/-/g,'')}
+    function txt(t){return t.replace(/\\/g,'\\\\').replace(/,/g,'\\,').replace(/;/g,'\;').replace(/\n/g,'\\n')}
+    var stamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d+/,'');
+    var out=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//selfcare//skin plan//EN','CALSCALE:GREGORIAN'];
+    cur.plan.steps.forEach(function(st,i){
+      var a=addDays(cur.D,st[0]),b=addDays(cur.D,st[1]+1);
+      out.push('BEGIN:VEVENT','UID:'+d8(cur.D)+'-'+i+'@selfcare','DTSTAMP:'+stamp,
+        'DTSTART;VALUE=DATE:'+d8(a),'DTEND;VALUE=DATE:'+d8(b),
+        'SUMMARY:'+txt('Skin: '+st[3]),'DESCRIPTION:'+txt(st[4].join('\n')),
+        'BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+txt(st[3]),'TRIGGER:PT9H','END:VALARM','END:VEVENT');
+    });
+    out.push('END:VCALENDAR');
+    var blob=new Blob([out.join('\r\n')],{type:'text/calendar'}),a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);a.download=cur.plan.name.replace(/[^\w]+/g,'-').toLowerCase()+'-'+iso(cur.D)+'.ics';
+    document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500);
+  });
+  var sel=document.getElementById('ptype'),inp=document.getElementById('pdate');
+  var savedP=null;try{savedP=JSON.parse(localStorage.getItem('skin-proc'))}catch(e){}
+  sel.value=(savedP&&PLANS[savedP.t])?savedP.t:'tca';
+  // The procedure moved from 18 Oct to 18 Dec; a browser still holding the old default gets the new date
+  inp.value=(savedP&&savedP.d&&savedP.d!=='2026-10-18')?savedP.d:'2026-12-18';
+  sel.addEventListener('change',render);inp.addEventListener('change',render);
+  render();
+
+  /* inventory */
+  var SLOTS=['Cleansers','Toner & pads','Vitamin C','Morning serum','Treatments','Night hydrator','Booster','Day cream','Night cream','Eyes (day)','Eyes (night)','Masks','SPF','Tools','Other'];
+  var DEFAULT_INV=[
+    ['Cetaphil','Cleansers','open',''],['COSRX salicylic cleanser','Cleansers','open',''],['Round Lab 1025 cleanser','Cleansers','open',''],['Clean It Zero balm','Cleansers','open',''],
+    ['Mixsoon hyaluronic toner','Toner & pads','open',''],['Numbuzin niacinamide pads','Toner & pads','open','any morning'],['Some By Mi AHA/BHA/PHA pads','Toner & pads','open','when the skin asks'],['Medicube Zero Pore pads','Toner & pads','sealed',''],
+    ['Rohto Melano CC essence','Vitamin C','sealed','on order',2],
+    ['SKIN1004 Tone Brightening ampoule','Morning serum','open',''],['Mary & May Niacinamide 10%','Morning serum','sealed','expires first'],['Anua Niacinamide 10% + TXA 4%','Morning serum','sealed',''],
+    ['Caladerm azelaic (day)','Treatments','open',''],['Azelaic acid (night)','Treatments','open','prescription'],['Differin','Treatments','open','nightly, prescription'],['Salicylic spot treatment','Treatments','open','day'],['Benzoyl peroxide','Treatments','open','night'],['Reedle Shot 100','Treatments','sealed','Saturdays, after recovery'],['LION Pair Acne Cream','Treatments','sealed','on order, day spots'],['Some By Mi micro-pin patches','Treatments','sealed','on order, night spots'],
+    ['Manyo Bifida','Night hydrator','open',''],['Mixsoon bean essence','Night hydrator','open',''],['Ariul Kombucha','Night hydrator','sealed',''],['Mixsoon Daily essence','Night hydrator','sealed',''],['SKIN1004 Madagascar ampoule','Night hydrator','sealed',''],
+    ['Vollufiline','Booster','open',''],['NMN Bio Lifting-sil','Booster','sealed',''],['Alpha-H Vitamin E','Booster','sealed','cold months'],
+    ['Torriden Dive-In','Day cream','open',''],['SKIN1004 Centella cream','Day cream','sealed','on order, trial for PIE'],['Dr. Althea 345 mist','Day cream','sealed','on order, midday'],
+    ['Mixsoon bean cream','Night cream','open',''],['Illiyoon Ceramide Ato','Night cream','sealed','winter'],['Dr. Althea 345 cream','Night cream','sealed',''],['Aestura Atobarrier 365','Night cream','sealed','on order',2],['Rejuran Turnover cream','Night cream','sealed','on order, trial'],
+    ['Multi-peptide ginseng eye cream','Eyes (day)','open','finishing'],['Seoul 1988 eye cream','Eyes (day)','open',''],['Christian Breton eye serum','Eyes (day)','sealed',''],['Medik8 Crystal Retinal Eye','Eyes (night)','open',''],['BOJ Revive Eye retinal','Eyes (night)','sealed','',2],
+    ['Rejuran Turnover mask','Masks','sealed','recovery, first post-peel night'],['Dr. Jart Cryo Firming','Masks','sealed','recovery, week two'],['Hyaluronic / moisturising sheet masks','Masks','open','any night'],
+    ['SPF 50+','SPF','open','',6]
+  ];
+  var inv=null;
+  try{inv=JSON.parse(localStorage.getItem('skin-inv9'))}catch(e){}
+  function fromDefault(){return DEFAULT_INV.map(function(r,i){return {id:'d'+i,name:r[0],slot:r[1],status:r[2],note:r[3],qty:r[4]||1}})}
+  if(!inv||!inv.length)inv=fromDefault();
+  var TOOLS=[['High-frequency wand','spots, check Limits'],['Medicube Age-R Booster Pro','mornings: MC or Derma Shot, Booster on dry days'],['LED mask','mornings, clean skin'],['Gua sha','over cream, light pressure'],['Jade roller','chilled for puffiness']];
+  var hadTools=false;try{hadTools=localStorage.getItem('skin-tools-added')==='1'}catch(e){}
+  if(!hadTools){
+    TOOLS.forEach(function(t,i){if(!inv.some(function(it){return it.name===t[0]}))inv.push({id:'t'+i,name:t[0],slot:'Tools',status:'open',note:t[1],qty:1})});
+    try{localStorage.setItem('skin-tools-added','1');localStorage.setItem('skin-inv9',JSON.stringify(inv))}catch(e){}
+  }
+  inv.forEach(function(it){if(!it.qty)it.qty=1});
+  inv.forEach(function(it){if(it.slot==='Eyes')it.slot=/medik8|boj|retin/i.test(it.name)?'Eyes (night)':'Eyes (day)'});
+  var SUGGEST={
+    'Cleansers':'Round Lab 1025 Dokdo cleanser, COSRX salicylic cleanser',
+    'Toner & pads':'Numbuzin niacinamide pads; exfoliating pads are optional',
+    'Vitamin C':'Rohto Melano CC essence',
+    'Morning serum':'Anua Niacinamide 10% + TXA 4%',
+    'Treatments':'Differin and azelaic via prescription; Pair Acne Cream for spots',
+    'Night hydrator':'Beauty of Joseon Revive serum or Mixsoon Bean Essence',
+    'Booster':'Optional, nothing needed',
+    'Day cream':'Torriden Dive-In or SKIN1004 Centella cream',
+    'Night cream':'Aestura Atobarrier 365 (Illiyoon for cold months)',
+    'Eyes (day)':'Aestura under the eyes works; a separate product is optional',
+    'Eyes (night)':'Medik8 Crystal Retinal Ceramide Eye',
+    'Masks':'Any hydrating sheet mask; optional',
+    'SPF':'Rebuy your SPF 50+',
+    'Tools':'',
+    'Other':''
+  };
+  var TAGS={low:'Running low',winter:'Winter',trial:'Trial',prescription:'Prescription',recovery:'Recovery only',expires:'Expires first'};
+  var TAGRX={low:/^$/,winter:/winter|cold months/i,trial:/trial/i,prescription:/prescription/i,recovery:/recovery|post-peel/i,expires:/expires first/i};
+  function deriveTags(it){
+    if(it.tags)return;
+    it.tags=[];
+    Object.keys(TAGRX).forEach(function(k){if(k!=='low'&&TAGRX[k].test(it.note||''))it.tags.push(k)});
+    if(it.status==='low'){it.status='open';it.tags.push('low')}
+    it.note=(it.note||'').replace(/\b(winter|cold months|trial(?: for PIE)?|prescription|recovery|expires first)\b/gi,'').replace(/^[,\s]+|[,\s]+$/g,'').replace(/,\s*,/g,',').replace(/\s{2,}/g,' ');
+  }
+  function badges(it){return (it.tags||[]).map(function(k){return ' <i class="badge '+k+'">'+TAGS[k]+'</i>'}).join('')}
+  function isWinter(it){return (it.tags||[]).indexOf('winter')>-1}
+  function noteHtml(it){return (it.note?'<em>'+esc(it.note)+'</em>':'')}
+  var editing=null;
+  function toggleTag(id,k){inv.forEach(function(it){if(it.id===id){it.tags=it.tags||[];var i=it.tags.indexOf(k);if(i>-1)it.tags.splice(i,1);else it.tags.push(k)}});saveInv();renderInv()}
+  function isOpen(it){return it.status==='open'}
+  function isLow(it){return (it.tags||[]).indexOf('low')>-1}
+  function slotState(sl){
+    var open=inv.filter(function(it){return it.slot===sl&&isOpen(it)});
+    var sealed=inv.filter(function(it){return it.slot===sl&&it.status==='sealed'});
+    var low=open.length&&open.every(isLow);
+    return {open:open,sealed:sealed,empty:!open.length&&!sealed.length,buy:(!open.length&&!sealed.length)||(low&&!sealed.length)};
+  }
+  function buyLine(sl){return SUGGEST[sl]?'<li class="buy">Buy: '+esc(SUGGEST[sl])+'</li>':''}
+  function renderDaily(){
+    document.querySelectorAll('ul[data-slot]').forEach(function(ul){
+      var sl=ul.dataset.slot;
+      var st=slotState(sl);
+      var html=st.open.map(function(it){return '<li><b>'+esc(it.name)+'</b>'+qtyHtml(it)+badges(it)+'</li>'}).join('')
+              +st.sealed.map(function(it){return '<li>'+esc(it.name)+qtyHtml(it)+badges(it)+(it.note?' <em>'+esc(it.note)+'</em>':'')+'</li>'}).join('');
+      if(st.buy)html+=buyLine(sl);
+      ul.innerHTML=html||'<li class="empty">Nothing on the shelf</li>';
+    });
+  }
+  function saveInv(){try{localStorage.setItem('skin-inv9',JSON.stringify(inv))}catch(e){}}
+  function setStatus(id,st){inv.forEach(function(it){if(it.id===id){
+      if(st==='done'&&it.qty>1){it.qty-=1;it.status='sealed'}else it.status=st;
+      if(st==='open')it.note=(it.note||'').replace(/on order,?\s*/i,'').trim();
+      if(it.status!=='open')it.tags=(it.tags||[]).filter(function(k){return k!=='low'})}});editing=null;saveInv();renderInv()}
+  function setQty(id,d){inv.forEach(function(it){if(it.id===id)it.qty=Math.max(1,(it.qty||1)+d)});saveInv();renderInv()}
+  function qtyHtml(it){return it.qty>1?' <small class="qty">×'+it.qty+'</small>':''}
+  function itemRow(it){
+    var open=editing===it.id;
+    var row='<div class="item'+(open?' editing':'')+'"><span>'+esc(it.name)+qtyHtml(it)+badges(it)+noteHtml(it)+'</span><button type="button" class="lbl" data-edit="'+it.id+'">'+(open?'Done':'Edit')+'</button></div>';
+    if(open){
+      var acts='';
+      if(it.status==='sealed')acts='<button type="button" class="open" data-id="'+it.id+'" data-st="open">Opened</button>';
+      else if(it.status==='open')acts='<button type="button" class="done" data-id="'+it.id+'" data-st="done">Finished</button><button type="button" data-id="'+it.id+'" data-st="sealed">Reseal</button>';
+      else acts='<button type="button" data-id="'+it.id+'" data-st="open">Back to open</button>';
+      var tags=Object.keys(TAGS).filter(function(k){return k!=='low'||it.status==='open'}).map(function(k){var on=(it.tags||[]).indexOf(k)>-1;return '<button type="button" class="'+k+(on?' on':'')+'" data-tag="'+k+'" data-tid="'+it.id+'">'+TAGS[k]+'</button>'}).join('');
+      row+='<div class="editrow"><div class="acts">'+acts+'<span class="qtyctl"><button type="button" data-qty="-1" data-qid="'+it.id+'" aria-label="One fewer">−</button>'+(it.qty||1)+' on shelf<button type="button" data-qty="1" data-qid="'+it.id+'" aria-label="One more">+</button></span></div><div class="tagedit">'+tags+'</div></div>';
+    }
+    return row;
+  }
+  function group(status){
+    var out='',any=false;
+    SLOTS.forEach(function(sl){
+      var items=inv.filter(function(it){return (status==='open'?isOpen(it):it.status===status)&&it.slot===sl});
+      if(!items.length)return;any=true;
+      out+='<div class="slot"><h4>'+esc(sl)+'</h4>'+items.map(itemRow).join('')+'</div>';
+    });
+    return any?out:'<p class="empty">Nothing here</p>';
+  }
+  function renderInv(){
+    document.getElementById('openlist').innerHTML=group('open');
+    document.getElementById('sealedlist').innerHTML=group('sealed');
+    document.getElementById('donelist').innerHTML=group('done');
+    var buys=SLOTS.filter(function(sl){return slotState(sl).buy&&SUGGEST[sl]}).map(function(sl){return '<li><b>'+esc(sl)+'</b>: '+esc(SUGGEST[sl])+'</li>'});
+    var tb=document.getElementById('tobuy');tb.innerHTML=buys.length?'<h3>To buy</h3><ul>'+buys.join('')+'</ul>':'';tb.style.display=buys.length?'':'none';
+    var n=inv.filter(function(it){return it.status==='done'}).length;
+    document.getElementById('donecount').textContent=n?'('+n+')':'';
+    renderDaily();
+  }
+  document.getElementById('inv').addEventListener('click',function(e){
+    var b=e.target.closest('button[data-id]');if(b){setStatus(b.dataset.id,b.dataset.st);return}
+    var ed=e.target.closest('button[data-edit]');if(ed){editing=(editing===ed.dataset.edit)?null:ed.dataset.edit;renderInv();return}
+    var tg=e.target.closest('button[data-tag]');if(tg){toggleTag(tg.dataset.tid,tg.dataset.tag);return}
+    var q=e.target.closest('button[data-qty]');if(q)setQty(q.dataset.qid,+q.dataset.qty);
+  });
+  var slotSel=document.getElementById('addslot');
+  SLOTS.forEach(function(sl){var o=document.createElement('option');o.value=sl;o.textContent=sl;slotSel.appendChild(o)});
+  document.getElementById('addbtn').addEventListener('click',function(){
+    var n=document.getElementById('addname').value.trim();if(!n)return;
+    inv.push({id:'u'+Date.now(),name:n,slot:slotSel.value,status:document.getElementById('addstatus').value,note:'',tags:[],qty:1});
+    document.getElementById('addname').value='';saveInv();renderInv();
+  });
+  document.getElementById('resetbtn').addEventListener('click',function(){
+    if(!window.confirm('Reset the list to the original stock?'))return;
+    inv=fromDefault();inv.forEach(deriveTags);saveInv();renderInv();
+  });
+  inv.forEach(deriveTags);
+  renderInv();
+  var tabs=document.querySelectorAll('nav.tabs button');
+  var views=document.querySelectorAll('section.view');
+  function show(id){
+    tabs.forEach(function(t){t.setAttribute('aria-selected',t.dataset.tab===id?'true':'false')});
+    views.forEach(function(v){v.classList.toggle('active',v.id===id)});
+    try{localStorage.setItem('skin-tab',id)}catch(e){}
+  }
+  tabs.forEach(function(t){t.addEventListener('click',function(){show(t.dataset.tab);window.scrollTo({top:0})})});
+  document.querySelectorAll('a.go').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();show(a.dataset.tab);window.scrollTo({top:0})})});
+  var saved=null;try{saved=localStorage.getItem('skin-tab')}catch(e){}
+  if(saved&&document.getElementById(saved))show(saved);
+})();
+</script>
+</body>
+</html>

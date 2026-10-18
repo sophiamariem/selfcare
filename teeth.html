@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Teeth whitening</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=8">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png?v=5">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=5">
+<meta name="theme-color" content="#0B0C0E">
+<meta name="mobile-web-app-capable" content="yes">
+<script src="app.js?v=4"></script>
+</head>
+<body>
+<div class="wrap">
+<div class="topbar"><nav class="pages" aria-label="Pages"><a href="./">Skin</a><a href="teeth.html" aria-current="page">Teeth</a></nav><button id="theme" class="themebtn" type="button" aria-label="Toggle theme">☾</button></div>
+<header class="hero">
+  <p class="count">Powder · strips · pen · breath spray</p>
+  <h1>Teeth whitening</h1>
+  <p>You don't use all four every night. Powder is daily, strips and pen take turns in the evening, spray is whenever.</p>
+</header>
+<div class="tonight" id="tonight" hidden><p class="lbl">Tonight</p><p class="what" id="tonight-what"></p><p class="sub" id="tonight-sub"></p></div>
+<script>
+(function(){
+  var NIGHTS=[
+    ['Rest night','Powder only, no strip or pen'],
+    ['Strip night','Powder, dry your teeth, strip for the time on the box'],
+    ['Pen night','Powder, dry your teeth, thin layer of pen, lips off ~1 min'],
+    ['Strip night','Powder, dry your teeth, strip for the time on the box'],
+    ['Rest night','Powder only, no strip or pen'],
+    ['Strip night','Powder, dry your teeth, strip for the time on the box'],
+    ['Pen night','Powder, dry your teeth, thin layer of pen, lips off ~1 min']
+  ];
+  var box={total:14,used:[]};
+  try{var B=JSON.parse(localStorage.getItem('teeth-strips'));if(B&&B.used)box=B}catch(e){}
+  function save(){try{localStorage.setItem('teeth-strips',JSON.stringify(box))}catch(e){}}
+  function today(){var t=new Date();return t.getFullYear()+'-'+('0'+(t.getMonth()+1)).slice(-2)+'-'+('0'+t.getDate()).slice(-2)}
+  function left(){return Math.max(0,box.total-box.used.length)}
+  function render(){
+    var n=NIGHTS[new Date().getDay()],what=n[0],sub=n[1],l=left(),done=box.used.indexOf(today())>=0;
+    if(what==='Strip night'){
+      if(l===0&&!done){what='Pen night';sub='Strip box is finished: powder, then a thin layer of pen. Maintenance from now on'}
+      else sub+=done?'. Logged, '+l+' left':'. '+l+' left in the box';
+    }
+    document.getElementById('tonight-what').textContent=what;
+    document.getElementById('tonight-sub').textContent=sub;
+    document.getElementById('tonight').hidden=false;
+    var el=document.getElementById('strips');
+    var pct=box.total?Math.round(100*l/box.total):0;
+    el.innerHTML='<h3>Strip box</h3>'+
+      '<div class="trow"><div><b>'+l+' of '+box.total+' left</b>'+
+      '<span class="st '+(l?'ok':'no')+'">'+(l?(l<=3?'Nearly done':'About '+Math.ceil(l/3)+' week'+(Math.ceil(l/3)===1?'':'s')+' at 3 a week'):'Finished: powder daily, pen once or twice a week')+'</span>'+
+      '<div class="bar"><i style="width:'+pct+'%"></i></div></div>'+
+      (done?'<button type="button" id="s-undo">Undo tonight</button>':'<button type="button" id="s-use"'+(l?'':' disabled')+'>Used one tonight</button>')+'</div>'+
+      '<div class="trow"><div><small>New box? Strip nights in it (one per night, top and bottom together)</small></div>'+
+      '<span class="newbox"><input id="s-total" type="number" min="1" max="60" value="'+box.total+'" aria-label="Strip nights in the box"><button type="button" id="s-new">Start new box</button></span></div>';
+  }
+  document.addEventListener('click',function(e){
+    var t=today();
+    if(e.target.id==='s-use'){if(box.used.indexOf(t)<0)box.used.push(t)}
+    else if(e.target.id==='s-undo'){box.used=box.used.filter(function(v){return v!==t})}
+    else if(e.target.id==='s-new'){var v=parseInt(document.getElementById('s-total').value,10);if(!(v>0))return;box={total:v,used:[]}}
+    else return;
+    save();render();
+  });
+  document.addEventListener('DOMContentLoaded',render);
+})();
+</script>
+
+<section class="block week-wrap">
+  <h2>The week</h2>
+  <div class="tbl">
+    <table class="week-tbl">
+      <thead><tr><th></th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th></tr></thead>
+      <tbody>
+        <tr><td><b>Powder</b></td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td></tr>
+        <tr><td><b>Strips</b> <span class="muted">night</span></td><td><span class="badge trial">Strip</span></td><td></td><td><span class="badge trial">Strip</span></td><td></td><td><span class="badge trial">Strip</span></td><td></td><td></td></tr>
+        <tr><td><b>Pen</b> <span class="muted">night</span></td><td></td><td><span class="badge">Pen</span></td><td></td><td></td><td></td><td><span class="badge">Pen</span></td><td></td></tr>
+        <tr><td><b>Rest night</b></td><td></td><td></td><td></td><td class="muted">rest</td><td></td><td></td><td class="muted">rest</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <ul class="days">
+    <li><b>Mon</b><span>Powder</span><span class="badge trial">Strip</span></li>
+    <li><b>Tue</b><span>Powder</span><span class="badge">Pen</span></li>
+    <li><b>Wed</b><span>Powder</span><span class="badge trial">Strip</span></li>
+    <li><b>Thu</b><span>Powder</span><span class="muted">rest</span></li>
+    <li><b>Fri</b><span>Powder</span><span class="badge trial">Strip</span></li>
+    <li><b>Sat</b><span>Powder</span><span class="badge">Pen</span></li>
+    <li><b>Sun</b><span>Powder</span><span class="muted">rest</span></li>
+  </ul>
+  <div class="note">
+    <ul>
+      <li>Breath spray: anytime, any day.</li>
+      <li>No sensitivity after week one? Add a 4th strip night on Sunday.</li>
+      <li>Never strips and pen on the same night.</li>
+      <li>When the strip box is finished, keep the powder daily and use the pen once or twice a week to maintain.</li>
+    </ul>
+  </div>
+  <div class="tracker" id="strips"></div>
+</section>
+
+<section class="block">
+  <div class="col pm">
+    <h2>Evening <small>in order</small></h2>
+    <ol class="steps">
+      <li><div><b>Golden milk (if having it)</b><span>Drink it first, then rinse your mouth with water. <em class="badge trial">Wait ~30 min</em></span></div></li>
+      <li><div><b>Brush with the powder</b><span>Gentle strokes, about 2 minutes. Spit and rinse.</span></div></li>
+      <li><div><b>Dry your teeth</b><span>Pat with a tissue so the strip or gel sticks.</span></div></li>
+      <li><div><b>Strip or pen</b><span>Check the week. Strips for the time on the box. Pen: thin layer, lips off ~1 min.</span></div></li>
+      <li><div><b>Remove strip and rinse lightly</b><span>Wipe off leftover gel from gums.</span></div></li>
+      <li><div><b>Bed</b><span>Only water from now on.</span></div></li>
+    </ol>
+  </div>
+</section>
+
+<section class="block">
+  <h2>How to use each one</h2>
+  <div class="inv">
+    <div>
+      <h3>Tooth powder</h3>
+      <p class="muted">Once a day</p>
+      <ul>
+        <li>Wet your brush</li>
+        <li>Tap a little powder into the cap or your palm and dip the brush there, not into the jar</li>
+        <li>Brush gently for 2 min, spit, rinse</li>
+        <li>No fluoride on the label? Use your normal fluoride toothpaste at the other brushing</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Whitening strips</h3>
+      <p class="muted">3–4 nights a week</p>
+      <ul>
+        <li>Apply to dry teeth, gel side on teeth</li>
+        <li>Press into gaps, fold extra behind teeth</li>
+        <li>Leave on for the time on the box (usually ~30 min)</li>
+        <li>Don't sleep in them unless the box says so</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Whitening pen</h3>
+      <p class="muted">2–3 nights a week, on non-strip nights</p>
+      <ul>
+        <li>Twist until gel shows on the brush tip</li>
+        <li>Thin layer over the whole front of your smile teeth (top and bottom front 6–8)</li>
+        <li>Keep lips off for about 1 min</li>
+        <li>No food or drink for 30–60 min</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Mint breath spray</h3>
+      <p class="muted">Anytime</p>
+      <ul>
+        <li>1–2 sprays on the tongue</li>
+        <li>No waiting rules</li>
+        <li>Freshens breath only, it doesn't whiten</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <h2>Do I need to wait?</h2>
+  <div class="tbl">
+    <table class="wait-tbl">
+      <thead><tr><th>After</th><th>Wait</th></tr></thead>
+      <tbody>
+        <tr><td><b>Coffee, juice, citrus, soda, wine, fruit</b><br><span class="muted">Acid softens enamel for a while</span></td><td><span class="badge recovery">30–60 min</span></td></tr>
+        <tr><td><b>A meal, milk or golden milk</b><br><span class="muted">Rinse with water first</span></td><td><span class="badge recovery">~30 min</span></td></tr>
+        <tr><td><b>Strips or pen</b><br><span class="muted">Teeth soak up colour more easily</span></td><td><span class="badge recovery">No food or drink 30–60 min</span></td></tr>
+        <tr><td><b>Water</b><br><span class="muted">Before, during, after</span></td><td><span class="badge prescription">Always fine</span></td></tr>
+        <tr><td><b>Breath spray</b><br><span class="muted">Use it whenever</span></td><td><span class="badge prescription">No wait</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="note am">
+    <h3>Golden milk</h3>
+    <p>It won't stain your teeth permanently. Turmeric leaves a surface stain that brushing and whitening remove. Have it <b>before</b> your routine, never after. If it's sweetened, brushing afterward also protects against cavities.</p>
+  </div>
+</section>
+
+<section class="block">
+  <h2>Food and habits</h2>
+  <div class="inv">
+    <div class="ok">
+      <h3>Fine anytime</h3>
+      <ul>
+        <li>Water</li>
+        <li>Milk, plain yogurt, white cheese</li>
+        <li>Rice, pasta, chicken, white fish</li>
+        <li>Bananas, apples (peeled), cauliflower</li>
+        <li>Coffee <em>before</em> whitening, with a straw if iced, rinse after</li>
+      </ul>
+    </div>
+    <div class="no">
+      <h3>Avoid right after whitening</h3>
+      <ul>
+        <li>Coffee, black tea, red wine, cola</li>
+        <li>Golden milk, turmeric, curry</li>
+        <li>Berries, beetroot, tomato sauce</li>
+        <li>Soy sauce, balsamic vinegar</li>
+        <li>Smoking or vaping</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note warn">
+    <h3>Take a break if…</h3>
+    <ul>
+      <li>Teeth feel zingy or achy: skip 2–3 nights and use a sensitivity toothpaste (potassium nitrate)</li>
+      <li>Gums turn white or sore: trim strips and wipe excess gel</li>
+      <li>You have cavities, gum problems, fresh dental work, or are pregnant or breastfeeding: check with a dentist first</li>
+    </ul>
+  </div>
+</section>
+
+<p class="foot">Fillings, crowns and veneers don't whiten. Always follow the times printed on your own boxes if they differ from this sheet.</p>
+</div>
+</body>
+</html>
