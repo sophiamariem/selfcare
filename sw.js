@@ -1,6 +1,6 @@
 // Offline support: serve from the network when online (so updates show up), fall back to the cache when not.
-const CACHE = 'selfcare-v8';
-const FILES = ['./', 'index.html', 'teeth.html', 'style.css?v=9', 'app.js?v=4', 'manifest.webmanifest',
+const CACHE = 'selfcare-v9';
+const FILES = ['./', 'index.html', 'teeth.html', 'style.css?v=10', 'app.js?v=4', 'manifest.webmanifest',
   'icon-192.png?v=5', 'icon-512.png', 'apple-touch-icon.png?v=5'];
 
 self.addEventListener('install', e => {

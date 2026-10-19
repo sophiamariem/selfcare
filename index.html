@@ -7,7 +7,7 @@
 <title>Skin schedule</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=9">
+<link rel="stylesheet" href="style.css?v=10">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png?v=5">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=5">
@@ -23,7 +23,7 @@
   <h1>Skin schedule</h1>
   <p>Daily routine, the week, limits, what to do when, and a dated plan for any treatment. Open nothing new unless it says so.</p>
 </header>
-<div class="tonight" id="tonight" hidden><p class="lbl" id="tonight-lbl">Tonight</p><p class="what" id="tonight-what"></p><p class="sub" id="tonight-sub"></p><p class="dev" id="tonight-dev" hidden></p></div>
+<div class="tonight" id="tonight" hidden><p class="lbl" id="tonight-lbl">Tonight</p><p class="what" id="tonight-what"></p><p class="sub" id="tonight-sub"></p><p class="dev" id="tonight-dev" hidden></p><p class="heads" id="tonight-heads" hidden></p></div>
 
 <nav class="tabs" role="tablist" aria-label="Sections">
   <button role="tab" aria-selected="true" data-tab="daily">Daily</button>
@@ -459,7 +459,8 @@
   function fmt(d){return DAYS[d.getDay()]+' '+d.getDate()+' '+MONS[d.getMonth()]}
   function fmtRange(a,b){if(a.getTime()===b.getTime())return fmt(a);return DAYS[a.getDay()]+' '+a.getDate()+(a.getMonth()===b.getMonth()?'':' '+MONS[a.getMonth()])+' – '+fmt(b)}
   function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;')}
-  var procs=[];
+  var procs=[],upcoming=null;
+  function stopDayOf(plan){var d=0;plan.steps.forEach(function(x){if(x[3]==='Actives stop'&&!d)d=x[0]});return d}
   function pDate(v){var p=v.split('-');return new Date(+p[0],+p[1]-1,+p[2])}
   function span(plan){var st=plan.steps;return {first:st[0][0],last:Math.max(st[st.length-1][0],plan.inj||0)}}
   function saveProcs(){try{localStorage.setItem('skin-procs',JSON.stringify(procs))}catch(e){}}
@@ -494,13 +495,16 @@
     });
     document.getElementById('tlwrap').innerHTML=html;
     // which appointment matters today: one whose window we're in (closest date wins), else the next one coming up
-    cur=null;var active=null,next=null;
+    cur=null;upcoming=null;var active=null,pre=null,next=null;
     procs.forEach(function(p){
       var plan=PLANS[p.t],D=pDate(p.d),rel=Math.round((t0-D)/86400000),sp=span(plan),c={plan:plan,D:D,rel:rel};
-      if(rel>=sp.first&&rel<=sp.last&&(!active||Math.abs(rel)<Math.abs(active.rel)))active=c;
+      if(rel>=sp.first&&rel<=sp.last){
+        if(rel>=stopDayOf(plan)){if(!active||Math.abs(rel)<Math.abs(active.rel))active=c}
+        else if(!pre||rel>pre.rel)pre=c;
+      }
       if(rel<0&&(!next||-rel<-next.rel))next=c;
     });
-    cur=active||next;
+    cur=active||pre||next;if(active&&pre)upcoming=pre;
     var cEl=document.getElementById('count');
     if(cur){var n=-cur.rel;cEl.textContent=n>0?cur.plan.name+' in '+n+' day'+(n===1?'':'s')+', '+fmt(cur.D):(n===0?cur.plan.name+' today':'Day '+(-n)+' after '+cur.plan.name)}
     else cEl.textContent='';
@@ -619,13 +623,28 @@
     var morning=new Date().getHours()<12,plan=cur.plan,rel=cur.rel;
     var st=plan.steps,first=st[0][0],last=st[st.length-1][0],what,sub,day=new Date().getDay();
     document.getElementById('tonight-lbl').textContent=morning?'This morning':'Tonight';
-    if(rel>=first&&rel<=last){
+    // Before the actives-stop day the routine is normal, with a red heads-up; the card turns red from that evening
+    var stopDay=stopDayOf(plan),heads='';
+    var inWin=rel>=first&&rel<=last,stopped=inWin&&(rel>stopDay||(rel===stopDay&&!morning));
+    if(inWin&&!stopped){
+      var left=stopDay-rel,today=null;st.forEach(function(x){if(rel>=x[0]&&rel<=x[1]&&x[0]!==stopDay)today=x});
+      heads=left===0?'Last night of Differin tonight: actives stop from tomorrow, for '+plan.name:
+        'Actives stop '+fmt(addDays(cur.D,stopDay))+', in '+left+' day'+(left===1?'':'s')+', for '+plan.name+' on '+fmt(cur.D);
+      if(today)heads+='. '+today[3]+': '+today[4][0];
+    }
+    if(upcoming){var us=stopDayOf(upcoming.plan),ul=us-upcoming.rel;
+      heads=(heads?heads+'. ':'')+(ul===0?'Last night of Differin tonight for '+upcoming.plan.name:'Actives stop '+fmt(addDays(upcoming.D,us))+', in '+ul+' day'+(ul===1?'':'s')+', for '+upcoming.plan.name+' on '+fmt(upcoming.D))}
+    if(stopped){
       var c=null,prev=null;
       st.forEach(function(x){if(rel>=x[0]&&rel<=x[1])c=x;if(x[0]<=rel)prev=x});
       if(c){what=c[3];sub=c[4][0]}
       else if(rel<0){what='Procedure prep';sub='Actives stay paused. Cleansers, toner, hydrator, night cream, SPF only'}
       else{what='Recovery';sub=prev[3]+' rules still apply'}
-      if(morning){var m=(c||prev)[4].filter(function(x){return /^Mornings/.test(x)})[0];sub=m||BLAND}
+      if(morning){
+        var m=(c||prev)[4].filter(function(x){return /^Mornings/.test(x)})[0];
+        var back=st.some(function(x){return x[0]>0&&x[0]<=rel&&x[4].some(function(b){return /vitamin C.*back|Full routine/i.test(b)})});
+        sub=m||(back?MORNING:BLAND);
+      }
       box.classList.add('proc');
     }else{
       box.classList.remove('proc');
@@ -640,6 +659,7 @@
     }
     document.getElementById('tonight-what').textContent=what;
     document.getElementById('tonight-sub').textContent=sub;
+    var hd=document.getElementById('tonight-heads');hd.textContent=heads;hd.hidden=!heads;
     var dl=document.getElementById('tonight-dev'),dw=DEV_WEEK[day],dv=null;
     if(!box.classList.contains('proc'))dv=morning?dw.am:dw.pm;
     if(dv&&dv.length){dl.textContent='Devices: '+devText(dv)+(morning&&dw.note?'. '+dw.note:'');dl.hidden=false}else dl.hidden=true;
