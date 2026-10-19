@@ -7,7 +7,7 @@
 <title>Skin schedule</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=12">
+<link rel="stylesheet" href="style.css?v=13">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png?v=5">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=5">
@@ -631,6 +631,7 @@
     if(rel<sp.first||rel>sp.last){ban.hidden=true;return}
     if(rel<=stopDay){
       var left=stopDay-rel;
+      ban.classList.add('warn');ban.classList.remove('pm');
       ban.innerHTML='<h3>'+(left===0?'Last night of Differin tonight':'Actives stop '+fmt(addDays(cur.D,stopDay))+', in '+left+' day'+(left===1?'':'s'))+'</h3><p>'+esc(plan.name)+' on '+fmt(cur.D)+'. Until then, the routine below as normal.</p>';
       ban.hidden=false;return;
     }
@@ -649,7 +650,9 @@
       else{li.classList.add('paused');pausedN++;tag.textContent=ret!==null?'Paused until '+fmt(addDays(cur.D,ret)):'Paused for now'}
       li.querySelector('div').appendChild(tag);
     });
-    ban.innerHTML='<h3>'+(rel<0?'Actives paused':rel===0?esc(plan.name)+' today':'Recovering: day '+rel+' after '+esc(plan.name))+'</h3><p>'+
+    var phase=null;st.forEach(function(x){if(x[0]<=rel)phase=x});
+    var goBack=!!phase&&phase[2]==='go';ban.classList.toggle('warn',!goBack);ban.classList.toggle('pm',goBack);
+    ban.innerHTML='<h3>'+(rel<0?'Actives paused':rel===0?esc(plan.name)+' today':(goBack?'Coming back: ':'Recovering: ')+'day '+rel+' after '+esc(plan.name))+'</h3><p>'+
       (rel===0?'Only what the clinic applies and sends home.':full?'Full routine is back.':pausedN?'Steps marked below are off for now, with the date each one comes back. The <a class="go" data-tab="proc" href="#proc">Procedure</a> tab has the full plan.':'Everything below is back.')+'</p>';
     ban.hidden=false;
   }
@@ -694,8 +697,9 @@
         sub=m||(back?MORNING:BLAND);
       }
       box.classList.add('proc');
+      box.classList.toggle('back',((c||prev)||[])[2]==='go');
     }else{
-      box.classList.remove('proc');
+      box.classList.remove('proc','back');
       if(morning){
         var ps=padStatus(),padDay=(day===3||day===0);
         what=padDay?'Pad morning, if the skin asks':'Standard morning';
