@@ -7,7 +7,7 @@
 <title>Skin schedule</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=10">
+<link rel="stylesheet" href="style.css?v=12">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png?v=5">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=5">
@@ -37,6 +37,7 @@
 
 <!-- DAILY -->
 <section class="view active" id="daily">
+<div class="note warn dailyban" id="dailyban" hidden></div>
 <p class="lead">Normal days. Around a procedure, follow the <a class="go" data-tab="proc" href="#proc">Procedure</a> tab instead. The Tonight card above says which applies.</p>
 <div class="day">
   <div class="col am">
@@ -510,6 +511,7 @@
     else cEl.textContent='';
     tonight();
     tracker();
+    dailyMarks();
     saveProcs();
   }
   var cur=null;
@@ -605,6 +607,52 @@
       card.insertAdjacentHTML('beforeend',h+'</div>');
     });
   })();
+
+  // Daily tab: while actives are paused for an appointment, mark the steps that are off and when each comes back
+  var DAILY=[
+    {col:'am',title:'Vitamin C',re:/vitamin C/i},
+    {col:'am',title:'Brightening serum',re:/brightening serum/i},
+    {col:'am',title:'Azelaic acid',re:/azelaic/i},
+    {col:'am',title:'LED mask (optional)',re:/LED/},
+    {col:'am',title:'Medicube (optional)',re:/Medicube|MC and Derma/},
+    {col:'am',title:'Gua sha or jade roller (optional)',re:/gua sha|jade roller/i,part:/^Jade roller/i,partTxt:'Jade roller only for now, no gua sha'},
+    {col:'pm',title:'High-frequency wand (optional)',re:/wand/i},
+    {col:'pm',title:'Booster (optional, over the hydrator)',re:/booster/i,also:/Booster and the wand/},
+    {col:'pm',title:'Differin',re:/Differin/},
+    {col:'pm',title:'Azelaic acid',re:/azelaic/i},
+    {col:'pm',title:'Eye',re:/Medik8/i}
+  ];
+  var BACK=/back|nightly|every other night|fine from today|Full routine/i;
+  function dailyMarks(){
+    var ban=document.getElementById('dailyban');if(!ban)return;
+    document.querySelectorAll('#daily ol.steps>li').forEach(function(li){li.classList.remove('paused','partly');var t=li.querySelector('.ptag');if(t)t.remove()});
+    if(!cur){ban.hidden=true;return}
+    var plan=cur.plan,rel=cur.rel,st=plan.steps,sp=span(plan),stopDay=stopDayOf(plan);
+    if(rel<sp.first||rel>sp.last){ban.hidden=true;return}
+    if(rel<=stopDay){
+      var left=stopDay-rel;
+      ban.innerHTML='<h3>'+(left===0?'Last night of Differin tonight':'Actives stop '+fmt(addDays(cur.D,stopDay))+', in '+left+' day'+(left===1?'':'s'))+'</h3><p>'+esc(plan.name)+' on '+fmt(cur.D)+'. Until then, the routine below as normal.</p>';
+      ban.hidden=false;return;
+    }
+    var full=st.some(function(x){return x[0]>stopDay&&x[0]<=rel&&x[4].some(function(b){return /Full routine/i.test(b)})});
+    var pausedN=0;
+    DAILY.forEach(function(it){
+      var li=null;document.querySelectorAll('#daily .col.'+it.col+' ol.steps>li').forEach(function(x){var b=x.querySelector('b');if(b&&b.textContent.trim()===it.title)li=x});
+      if(!li||full)return;
+      var on=null,ret=null;
+      st.forEach(function(x){if(x[0]<=stopDay)return;x[4].forEach(function(b){
+        if((it.re.test(b)||(it.also&&it.also.test(b)))&&BACK.test(b)){if(x[0]<=rel)on=b;else if(!ret)ret=x[0]}})});
+      var part=on&&it.part&&it.part.test(on);
+      if(on&&!part&&!/every other night/i.test(on))return;
+      var tag=document.createElement('span');tag.className='ptag';
+      if(on){li.classList.add('partly');tag.textContent=part?it.partTxt:'Every other night for now';}
+      else{li.classList.add('paused');pausedN++;tag.textContent=ret!==null?'Paused until '+fmt(addDays(cur.D,ret)):'Paused for now'}
+      li.querySelector('div').appendChild(tag);
+    });
+    ban.innerHTML='<h3>'+(rel<0?'Actives paused':rel===0?esc(plan.name)+' today':'Recovering: day '+rel+' after '+esc(plan.name))+'</h3><p>'+
+      (rel===0?'Only what the clinic applies and sends home.':full?'Full routine is back.':pausedN?'Steps marked below are off for now, with the date each one comes back. The <a class="go" data-tab="proc" href="#proc">Procedure</a> tab has the full plan.':'Everything below is back.')+'</p>';
+    ban.hidden=false;
+  }
 
   // Morning / Tonight card: the procedure plan while inside its window, otherwise the normal week
   var WEEK_NIGHT=[
