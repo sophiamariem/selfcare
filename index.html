@@ -7,7 +7,7 @@
 <title>Skin schedule</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=8">
+<link rel="stylesheet" href="style.css?v=9">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png?v=5">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=5">
@@ -210,26 +210,15 @@
 
 <!-- PROCEDURE -->
 <section class="view" id="proc">
-<div class="picker">
-  <label>Treatment
-    <select id="ptype">
-      <option value="tca">Microneedling + TCA</option>
-      <option value="mn">Microneedling only</option>
-      <option value="pdl">Vascular laser (PDL / V-Beam)</option>
-      <option value="botox">Botox</option>
-      <option value="lpeel">Light chemical peel</option>
-      <option value="mpeel">Medium TCA peel</option>
-      <option value="frax">Fractional laser (CO2 / erbium)</option>
-    </select>
-  </label>
-  <label>Date
-    <input type="date" id="pdate">
-  </label>
+<div class="picker plist">
+  <h3>Your appointments</h3>
+  <div id="plist"></div>
+  <button type="button" class="padd" id="padd">+ Add a treatment</button>
 </div>
+<div class="note warn" id="pclash" hidden></div>
 <ul class="lead" style="padding-left:1.1rem"><li>Dates are a plan; if the skin is still pink, tight or peeling, wait</li><li>The clinic's sheet beats this page</li><li>Nothing new gets opened unless a row says so</li></ul>
-<button type="button" class="calbtn" id="ics">Add this plan to my calendar</button>
-<ul class="tl" id="tl"></ul>
-<div class="note warn" id="pwarn"></div>
+<button type="button" class="calbtn" id="ics">Add all of these to my calendar</button>
+<div id="tlwrap"></div>
 </section>
 
 <!-- TREATMENTS -->
@@ -412,7 +401,27 @@
       [10,14,'go','Days 10–14',['Differin every other night']],
       [21,21,'go','Week 4',['Differin nightly','Azelaics, vitamin C, Medik8, boosters back']],
       [28,28,'go','Week 5',['Pads, spot treatments, Reedle back','Full routine']]
-    ],warn:['Strict sun avoidance until D+28, then careful for 3 months','4 weeks clear of anything else','Next session 6–12 weeks later']}
+    ],warn:['Strict sun avoidance until D+28, then careful for 3 months','4 weeks clear of anything else','Next session 6–12 weeks later']},
+    seoul:{name:'Sofwave + Rejuran + Juvelook',inj:28,steps:[
+      [-14,-14,'stop','Two weeks out',['No sun or tanning on the face from now','Nothing new opened from now']],
+      [-4,-4,'stop','Actives stop',['Last night of Differin tonight','From tomorrow: no Differin, azelaics, vitamin C, pads, BPO, salicylic, Reedle, Medik8 eye retinal','Keep: cleansers, toner, hydrator, Torriden, night cream, SPF']],
+      [-1,-1,'','Day before',['Ask the clinic about skipping alcohol, fish oil, ibuprofen and aspirin: less bruising','Spa or jjimjilbang only before the treatment, never after']],
+      [0,0,'now','Clinic day',['Spa in the morning if you want it, then the clinic. Nothing heated afterwards','Usually Sofwave first, then Rejuran, Rejuran-i and Juvelook','No makeup for 24 hours','Tonight: Cetaphil with cool water, hydrator, Illiyoon, nothing else','Sleep on your back, head a little raised']],
+      [1,3,'','Days 1–3, bumps and swelling',['Rejuran bumps settle in 1–3 days; swelling and small bruises are normal','No sauna, hot water on the face, alcohol or hard workouts','Cetaphil, toner, hydrator, Illiyoon, SPF','Massage the Juvelook areas only if the clinic told you to','Flying: drink plenty of water; a hydrating sheet mask is fine']],
+      [4,6,'go','Days 4–6',['Differin every other night, Illiyoon over it','Mornings: toner, hydrator, Torriden, SPF','Medik8 eye retinal still off (Rejuran-i)']],
+      [7,7,'go','Week 2',['Differin nightly','Both azelaics, vitamin C, brightening serum back','Medik8 eye retinal back']],
+      [14,14,'go','Two weeks',['Pads and spot treatments back','Lasers, light treatments or needling allowed from here']],
+      [28,28,'go','Four weeks',['Full routine','Juvelook keeps building for 2–3 months; a next session is usually 4+ weeks later']]
+    ],warn:['Juvelook areas: no Medicube, gua sha, jade roller or face pressure for 4 weeks','Sofwave: no saunas, hot yoga or heat for a week, and strict SPF','Rejuran-i: no eye retinal or rubbing the eyes for a week','Lasers, light treatments and needling 2+ weeks clear']},
+    dyevl:{name:'Dye-VL (vascular light)',steps:[
+      [-14,-14,'stop','Two weeks out',['No sun or self-tan on the face from now']],
+      [-3,-3,'stop','Actives stop',['Last night of Differin tonight','From tomorrow: no Differin, azelaics, vitamin C, pads, spot treatments']],
+      [0,0,'now','Dye-VL',['Cool compress this evening','Cetaphil, hydrator, Illiyoon, SPF','Nothing heated, no exercise today']],
+      [1,2,'','Days 1–2, a little red or puffy',['Same bland routine','Small dark specks or crusts can appear: leave them alone']],
+      [3,6,'go','Days 3–6',['Differin every other night','Mornings bland, SPF']],
+      [7,7,'go','Week 2',['Differin nightly','Azelaics, vitamin C, pads, Medik8 back','Full routine']],
+      [28,28,'go','Week 5',['Earliest next session','Usually 3–5 sessions for redness and PIE']]
+    ],warn:['SPF on the treated area every day','2+ weeks clear of injectables, Sofwave and needling either side']}
   };
   // Devices around any treatment, worked out from the plan's own milestones so a new plan gets them for free:
   //   stop with the actives; LED when the plan first says "go"; jade roller when Differin restarts;
@@ -438,6 +447,7 @@
     if(go===null)go=1;
     if(roller===null)roller=go;
     if(full===null)full=Math.max(roller,Math.round((roller+last)/2));
+    if(plan.inj){roller=Math.max(roller,plan.inj);full=Math.max(full,plan.inj);last=Math.max(last,plan.inj)}
     add(go,'LED mask back, only if the clinic agrees');
     add(roller,'Jade roller back, light pressure');
     add(full,'Gua sha, Medicube MC and Derma Shot back');
@@ -449,26 +459,54 @@
   function fmt(d){return DAYS[d.getDay()]+' '+d.getDate()+' '+MONS[d.getMonth()]}
   function fmtRange(a,b){if(a.getTime()===b.getTime())return fmt(a);return DAYS[a.getDay()]+' '+a.getDate()+(a.getMonth()===b.getMonth()?'':' '+MONS[a.getMonth()])+' – '+fmt(b)}
   function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+  var procs=[];
+  function pDate(v){var p=v.split('-');return new Date(+p[0],+p[1]-1,+p[2])}
+  function span(plan){var st=plan.steps;return {first:st[0][0],last:Math.max(st[st.length-1][0],plan.inj||0)}}
+  function saveProcs(){try{localStorage.setItem('skin-procs',JSON.stringify(procs))}catch(e){}}
   function render(){
-    var type=document.getElementById('ptype').value,dv=document.getElementById('pdate').value;
-    if(!dv)return;
-    var parts=dv.split('-'),D=new Date(+parts[0],+parts[1]-1,+parts[2]);
-    var plan=PLANS[type],html='';
-    plan.steps.forEach(function(st){
-      var a=addDays(D,st[0]),b=addDays(D,st[1]);
-      var rel=st[0]===0?'procedure':(st[0]<0?(-st[0])+' day'+(st[0]===-1?'':'s')+' before':'day'+(st[0]===st[1]?' '+st[0]:'s '+st[0]+'–'+st[1]));
-      var cls=st[2]==='stop'?'stopd':(st[2]==='go'?'god':(st[2]==='now'?'now':''));
-      var wcls=st[2]==='stop'?'when stop':(st[2]==='go'?'when go':'when');
-      html+='<li class="'+cls+'"><div class="'+wcls+'">'+fmtRange(a,b)+'<small>'+esc(rel)+'</small></div><div class="what"><b>'+esc(st[3])+'</b><ul>'+st[4].map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul></div></li>';
+    procs.sort(function(x,y){return x.d<y.d?-1:1});
+    var t0=new Date().setHours(0,0,0,0);
+    // appointment rows
+    var opts=Object.keys(PLANS).map(function(k){return [k,PLANS[k].name]});
+    document.getElementById('plist').innerHTML=procs.map(function(p,i){
+      return '<div class="prow"><select data-i="'+i+'" data-f="t" aria-label="Treatment">'+opts.map(function(o){return '<option value="'+o[0]+'"'+(o[0]===p.t?' selected':'')+'>'+esc(o[1])+'</option>'}).join('')+'</select>'+
+        '<input type="date" data-i="'+i+'" data-f="d" value="'+p.d+'" aria-label="Date"><button type="button" class="prm" data-rm="'+i+'" aria-label="Remove">×</button></div>';
+    }).join('');
+    // clashes: less than 2 weeks between treatments
+    var clash=[];
+    for(var i=1;i<procs.length;i++){var g=Math.round((pDate(procs[i].d)-pDate(procs[i-1].d))/86400000);
+      if(g<14)clash.push(PLANS[procs[i-1].t].name+' ('+fmt(pDate(procs[i-1].d))+') and '+PLANS[procs[i].t].name+' ('+fmt(pDate(procs[i].d))+') are only '+g+' day'+(g===1?'':'s')+' apart. Your rule is 2+ weeks; check with the clinic')}
+    var pc=document.getElementById('pclash');pc.hidden=!clash.length;
+    pc.innerHTML=clash.length?'<h3>Too close together</h3><ul>'+clash.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>':'';
+    // one timeline per appointment
+    var html='';
+    procs.forEach(function(p){
+      var plan=PLANS[p.t],D=pDate(p.d);
+      html+='<h2 class="tlh">'+esc(plan.name)+' <small>'+fmt(D)+'</small></h2><ul class="tl">';
+      plan.steps.forEach(function(st){
+        var a=addDays(D,st[0]),b=addDays(D,st[1]);
+        var rel=st[0]===0?'procedure':(st[0]<0?(-st[0])+' day'+(st[0]===-1?'':'s')+' before':'day'+(st[0]===st[1]?' '+st[0]:'s '+st[0]+'–'+st[1]));
+        var cls=st[2]==='stop'?'stopd':(st[2]==='go'?'god':(st[2]==='now'?'now':''));
+        var wcls=st[2]==='stop'?'when stop':(st[2]==='go'?'when go':'when');
+        html+='<li class="'+cls+'"><div class="'+wcls+'">'+fmtRange(a,b)+'<small>'+esc(rel)+'</small></div><div class="what"><b>'+esc(st[3])+'</b><ul>'+st[4].map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul></div></li>';
+      });
+      html+='</ul><div class="note warn"><h3>'+esc(plan.name)+'</h3><ul>'+plan.warn.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul></div>';
     });
-    document.getElementById('tl').innerHTML=html;
-    document.getElementById('pwarn').innerHTML='<h3>'+esc(plan.name)+', '+fmt(D)+'</h3><ul>'+plan.warn.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>';
-    var c=document.getElementById('count'),n=Math.round((D-new Date().setHours(0,0,0,0))/86400000);
-    c.textContent=n>0?plan.name+' in '+n+' day'+(n===1?'':'s')+', '+fmt(D):(n===0?plan.name+' today':'Day '+(-n)+' after '+plan.name.toLowerCase());
-    cur={plan:plan,D:D,rel:-n};
+    document.getElementById('tlwrap').innerHTML=html;
+    // which appointment matters today: one whose window we're in (closest date wins), else the next one coming up
+    cur=null;var active=null,next=null;
+    procs.forEach(function(p){
+      var plan=PLANS[p.t],D=pDate(p.d),rel=Math.round((t0-D)/86400000),sp=span(plan),c={plan:plan,D:D,rel:rel};
+      if(rel>=sp.first&&rel<=sp.last&&(!active||Math.abs(rel)<Math.abs(active.rel)))active=c;
+      if(rel<0&&(!next||-rel<-next.rel))next=c;
+    });
+    cur=active||next;
+    var cEl=document.getElementById('count');
+    if(cur){var n=-cur.rel;cEl.textContent=n>0?cur.plan.name+' in '+n+' day'+(n===1?'':'s')+', '+fmt(cur.D):(n===0?cur.plan.name+' today':'Day '+(-n)+' after '+cur.plan.name)}
+    else cEl.textContent='';
     tonight();
     tracker();
-    try{localStorage.setItem('skin-proc',JSON.stringify({t:type,d:dv}))}catch(e){}
+    saveProcs();
   }
   var cur=null;
   function iso(d){return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)}
@@ -483,10 +521,13 @@
   function ago(list){var t=today0(),best=null;list.forEach(function(v){var n=daysBetween(parseIso(v),t);if(n>=0&&(best===null||n<best))best=n});return best}
   function inLast7(list){var t=today0();return list.filter(function(v){var n=daysBetween(parseIso(v),t);return n>=0&&n<7}).length}
   function procBlock(){
-    if(!cur)return null;
-    var st=cur.plan.steps,from=Math.min(st[0][0],-14),to=Math.max(st[st.length-1][0],14);
-    if(cur.rel>=from&&cur.rel<to)return cur.rel<0?'procedure in '+(-cur.rel)+' day'+(cur.rel===-1?'':'s'):(cur.rel===0?'procedure today':'still recovering (back on day '+to+')');
-    return null;
+    var t0=new Date().setHours(0,0,0,0),why=null;
+    procs.forEach(function(p){
+      if(why)return;
+      var plan=PLANS[p.t],rel=Math.round((t0-pDate(p.d))/86400000),sp=span(plan),from=Math.min(sp.first,-14),to=Math.max(sp.last,14);
+      if(rel>=from&&rel<to)why=rel<0?plan.name+' in '+(-rel)+' day'+(rel===-1?'':'s'):(rel===0?plan.name+' today':'still recovering from '+plan.name+' (back on day '+to+')');
+    });
+    return why;
   }
   function padStatus(){
     var why=procBlock();if(why)return {ok:false,why:why};
@@ -607,29 +648,32 @@
 
   // Calendar: the dated plan as an .ics file, one all-day event per step
   document.getElementById('ics').addEventListener('click',function(){
-    if(!cur)return;
+    if(!procs.length)return;
     function d8(d){return iso(d).replace(/-/g,'')}
     function txt(t){return t.replace(/\\/g,'\\\\').replace(/,/g,'\\,').replace(/;/g,'\;').replace(/\n/g,'\\n')}
     var stamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d+/,'');
     var out=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//selfcare//skin plan//EN','CALSCALE:GREGORIAN'];
-    cur.plan.steps.forEach(function(st,i){
-      var a=addDays(cur.D,st[0]),b=addDays(cur.D,st[1]+1);
-      out.push('BEGIN:VEVENT','UID:'+d8(cur.D)+'-'+i+'@selfcare','DTSTAMP:'+stamp,
+    procs.forEach(function(p){var plan=PLANS[p.t],D=pDate(p.d);
+    plan.steps.forEach(function(st,i){
+      var a=addDays(D,st[0]),b=addDays(D,st[1]+1);
+      out.push('BEGIN:VEVENT','UID:'+p.t+'-'+d8(D)+'-'+i+'@selfcare','DTSTAMP:'+stamp,
         'DTSTART;VALUE=DATE:'+d8(a),'DTEND;VALUE=DATE:'+d8(b),
-        'SUMMARY:'+txt('Skin: '+st[3]),'DESCRIPTION:'+txt(st[4].join('\n')),
+        'SUMMARY:'+txt('Skin: '+st[3]+(st[0]===0?'':' ('+plan.name+')')),'DESCRIPTION:'+txt(st[4].join('\n')),
         'BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+txt(st[3]),'TRIGGER:PT9H','END:VALARM','END:VEVENT');
-    });
+    });});
     out.push('END:VCALENDAR');
     var blob=new Blob([out.join('\r\n')],{type:'text/calendar'}),a=document.createElement('a');
-    a.href=URL.createObjectURL(blob);a.download=cur.plan.name.replace(/[^\w]+/g,'-').toLowerCase()+'-'+iso(cur.D)+'.ics';
+    a.href=URL.createObjectURL(blob);a.download='skin-treatments.ics';
     document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500);
   });
-  var sel=document.getElementById('ptype'),inp=document.getElementById('pdate');
-  var savedP=null;try{savedP=JSON.parse(localStorage.getItem('skin-proc'))}catch(e){}
-  sel.value=(savedP&&PLANS[savedP.t])?savedP.t:'tca';
-  // The procedure moved from 18 Oct to 18 Dec; a browser still holding the old default gets the new date
-  inp.value=(savedP&&savedP.d&&savedP.d!=='2026-10-18')?savedP.d:'2026-12-18';
-  sel.addEventListener('change',render);inp.addEventListener('change',render);
+  try{procs=JSON.parse(localStorage.getItem('skin-procs'))||[]}catch(e){procs=[]}
+  procs=(procs||[]).filter(function(p){return p&&PLANS[p.t]&&/^\d{4}-\d\d-\d\d$/.test(p.d)});
+  if(!procs.length)procs=[{t:'seoul',d:'2026-11-05'},{t:'dyevl',d:'2026-11-18'},{t:'tca',d:'2026-12-18'}];
+  var plistEl=document.getElementById('plist');
+  plistEl.addEventListener('change',function(e){var el=e.target,i=+el.dataset.i;if(!procs[i])return;
+    if(el.dataset.f==='t')procs[i].t=el.value;else if(el.value)procs[i].d=el.value;render()});
+  plistEl.addEventListener('click',function(e){var b=e.target.closest('[data-rm]');if(!b)return;procs.splice(+b.dataset.rm,1);render()});
+  document.getElementById('padd').addEventListener('click',function(){var d=addDays(new Date(),28);procs.push({t:'tca',d:iso(d)});render()});
   render();
 
   /* inventory */

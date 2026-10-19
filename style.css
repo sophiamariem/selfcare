@@ -326,3 +326,18 @@ table.week-tbl th.today span{display:inline-block;background:var(--pm);color:var
 .week div.dev{background:none;border:0;border-top:1px dashed var(--line);border-radius:0;padding:.5rem 0 0;box-shadow:none;transform:none}
 .week>div.today div.dev{border-top-color:currentColor}
 .week>div.today .dev .chip{background:var(--bg);color:var(--ink)}
+
+/* procedure list */
+.plist{flex-direction:column;align-items:stretch}
+.plist h3{margin:0}
+.prow{display:flex;gap:.5rem;align-items:center;padding:.4rem 0;border-top:1px solid var(--line)}
+.prow:first-child{border-top:0}
+.prow select{flex:1 1 auto;min-width:0}
+.prow input{flex:0 0 auto}
+.prow select,.prow input{font:inherit;font-size:.95rem;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:.45rem .55rem}
+.prm{flex:0 0 auto;width:2rem;height:2rem;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--muted);font-size:1.1rem;line-height:1;cursor:pointer}
+.padd{align-self:flex-start;font:inherit;font-size:.88rem;font-weight:500;padding:.4rem .9rem;border-radius:999px;border:1px dashed var(--line);background:transparent;color:var(--ink);cursor:pointer}
+.prow select:focus-visible,.prow input:focus-visible,.prm:focus-visible,.padd:focus-visible{outline:2px solid var(--pm);outline-offset:2px}
+.tlh{margin-top:1.75rem}
+.tlh small{font-family:"Public Sans",sans-serif;font-size:.9rem;font-weight:500;color:var(--muted);margin-left:.3rem}
+@media (max-width:600px){.prow{flex-wrap:wrap}.prow select{flex-basis:100%}.prow input{flex:1 1 auto}}
